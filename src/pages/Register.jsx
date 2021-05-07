@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
@@ -22,8 +21,6 @@ const ALERTS = {
 };
 
 function Register() {
-  const dispatch = useDispatch();
-
   const [alert, setAlert] = useState(EMPTY);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,28 +57,29 @@ function Register() {
     <Container className='content'>
       <Row>
         <Col>&nbsp;</Col>
-        <Col lg='6' className='text-center'>
+        <Col xl='4' className='text-center'>
           <h4>Register</h4>
         </Col>
         <Col>&nbsp;</Col>
       </Row>
       <Row>
         <Col>&nbsp;</Col>
-        <Col lg='6'>
+        <Col md='7' lg='7' xl='5' >
           <Form onSubmit={submitForm}>
             <Form.Group controlId='registration'>
               <Form.Label>Email Address</Form.Label>
               <Form.Control type='email' placeholder='Email Address'
                 required={true} value={email} onChange={updateEmail} />
-
+              <p></p>
               <Form.Label>Password</Form.Label>
               <Form.Control type={isVisible ? 'text' : 'password'}
                 minLength='8' placeholder='Password'
                 required={true} value={password} onChange={updatePassword} />
-
+              <br />
               <Form.Check type="checkbox" label="Show Password"
                 value={isVisible} onChange={updateVisibility} />
             </Form.Group>
+            <br />
             <HiddenAlert alert={alert} set={setAlert} />
             <Button className='btn-block' variant='primary' type='submit'>Register</Button>
           </Form>

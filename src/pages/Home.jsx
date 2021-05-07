@@ -11,8 +11,7 @@ function Home() {
   }, []);
 
   return (
-    <Container fluid className='content'>
-    </Container>
+    <div></div>
   );
 }
 

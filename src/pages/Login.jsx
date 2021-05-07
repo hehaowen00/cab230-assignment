@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
-
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
+
 
 import { LOGIN_URL } from '../util';
 
@@ -13,7 +12,6 @@ const ALERTS = {
 };
 
 function Login() {
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const [alert, setAlert] = useState(EMPTY);
@@ -21,11 +19,13 @@ function Login() {
   const [isVisible, setVisible] = useState(false);
 
   const updateEmail = (e) => {
-    setEmail(e.target.value);
+    let { value } = e.target;
+    setEmail(value);
   };
 
   const updatePassword = (e) => {
-    setPassword(e.target.value);
+    let { value } = e.target;
+    setPassword(value);
   };
 
   const updateVisibility = (e) => {
@@ -34,6 +34,7 @@ function Login() {
 
   const submitForm = async (e) => {
     e.preventDefault();
+
     let resp = await fetch(LOGIN_URL, {
       method: 'POST',
       mode: 'cors',
@@ -47,7 +48,6 @@ function Login() {
     });
 
     let json = await resp.json();
-    console.log(json);
 
     if (resp.status === 200) {
       // store token
@@ -55,7 +55,7 @@ function Login() {
       localStorage.setItem('jwt-token', token);
 
       // redirect to home
-      // history.push('/');
+      history.push('/');
     } else {
       setAlert(ALERTS[resp.status]);
     }
@@ -65,29 +65,29 @@ function Login() {
     <Container className='content'>
       <Row>
         <Col>&nbsp;</Col>
-        <Col lg='6' className='text-center'>
+        <Col xl='4' className='text-center'>
           <h4>Login</h4>
         </Col>
         <Col>&nbsp;</Col>
       </Row>
       <Row>
         <Col>&nbsp;</Col>
-        <Col lg='6'>
+        <Col md='7' lg='7' xl='5' >
           <Form onSubmit={submitForm}>
             <Form.Group controlId='login'>
               <Form.Label>Email Address</Form.Label>
               <Form.Control type='email' placeholder='Email Address'
                 required={true} value={email} onChange={updateEmail} />
-
+              <p></p>
               <Form.Label>Password</Form.Label>
               <Form.Control type={isVisible ? 'text' : 'password'}
                 minLength='8' placeholder='Password'
                 required={true} value={password} onChange={updatePassword} />
-
+              <br />
               <Form.Check type="checkbox" label="Show Password"
                 value={isVisible} onChange={updateVisibility} />
             </Form.Group>
-
+            <br />
             <HiddenAlert alert={alert} set={setAlert} />
             <Button className='btn-block' variant='primary' type='submit'>Login</Button>
           </Form>
@@ -98,5 +98,5 @@ function Login() {
   );
 }
 
-export default connect(null, {})(Login);
+export default Login;
 
