@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 
-
-import { LOGIN_URL } from '../util';
+import { LOGIN_URL } from '../utils/definitions';
+import { storeJWT } from '../utils/jwt';
 
 const ALERTS = {
   400: { type: 'danger', msg: 'Error! Email and password are required' },
   401: { type: 'danger', msg: 'Error! Incorrect email or password' },
 };
 
-function Login() {
+function Login({ authenticated, setAuth }) {
   const history = useHistory();
+
+  useEffect(() => {
+    if (authenticated) {
+      history.push('/');
+    }
+  });
 
   const [alert, setAlert] = useState(EMPTY);
   const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
@@ -28,7 +36,7 @@ function Login() {
     setPassword(value);
   };
 
-  const updateVisibility = (e) => {
+  const updateVisibility = () => {
     setVisible(!isVisible);
   }
 
@@ -51,8 +59,13 @@ function Login() {
 
     if (resp.status === 200) {
       // store token
-      const { token } = json;
-      localStorage.setItem('jwt-token', token);
+      const { token, expires_in } = json;
+      let expires_at = new Date();
+      expires_at.setSeconds(expires_at.getSeconds() + expires_in);
+      // console.log(token, expires_in, expires_at);
+
+      storeJWT(email, token, expires_at);
+      setAuth(email);
 
       // redirect to home
       history.push('/');
@@ -63,16 +76,9 @@ function Login() {
 
   return (
     <Container className='content'>
-      <Row>
-        <Col>&nbsp;</Col>
-        <Col xl='4' className='text-center'>
-          <h4>Login</h4>
-        </Col>
-        <Col>&nbsp;</Col>
-      </Row>
-      <Row>
-        <Col>&nbsp;</Col>
+      <Row className='d-flex justify-content-center'>
         <Col md='7' lg='7' xl='5' >
+          <span className='text-center'><h4>Login</h4></span>
           <Form onSubmit={submitForm}>
             <Form.Group controlId='login'>
               <Form.Label>Email Address</Form.Label>
@@ -92,11 +98,22 @@ function Login() {
             <Button className='btn-block' variant='primary' type='submit'>Login</Button>
           </Form>
         </Col>
-        <Col>&nbsp;</Col>
       </Row>
     </Container>
   );
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    setAuth: (email) => dispatch({ type: 'userLogin', payload: email })
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    authenticated: state.authenticated,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 

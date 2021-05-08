@@ -1,22 +1,32 @@
-import React, {useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+import { Container } from 'react-bootstrap';
 import Sidebar from './components/Sidebar';
+
+import About from './pages/About';
 import Home from './pages/Home'
 import Login from './pages/Login';
+import Rankings from './pages/Rankings';
 import Register from './pages/Register';
 import Visualize from './pages/Visualize';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container } from 'react-bootstrap';
 
-function App() {
-  useEffect(async () => {
+import { getJWT } from './utils/jwt';
+
+function App({ setAuth }) {
+  useEffect(() => {
     // fetch rankings
     // check if user jwt is set
     // check if jwt is valid
+    let res = getJWT();
+    if (res.type == 'success') {
+      setAuth(res.email);
+    }
   });
 
   return (
@@ -29,7 +39,7 @@ function App() {
               <Home />
             </Route>
             <Route exact path='/rankings'>
-              <Home />
+              <Rankings />
             </Route>
             <Route exact path='/visualize'>
               <Visualize />
@@ -39,6 +49,9 @@ function App() {
             </Route>
             <Route exact path='/login'>
               <Login />
+            </Route>
+            <Route exact path='/about'>
+              <About />
             </Route>
           </Switch>
         </div>
@@ -56,8 +69,18 @@ const styles = {
     margin: 0,
     width: 'calc(100% - 280px)',
     alignItems: 'center',
-    paddingTop: '40px'
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    setAuth: (email) => dispatch({ type: 'userLogin', payload: email })
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

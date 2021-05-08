@@ -11,7 +11,12 @@ function Home() {
   }, []);
 
   return (
-    <div></div>
+    <Container className='content-1'>
+      <main className='flex-shrink-0'>
+        <h4>World Happiness Rankings</h4>
+        <p>Explore data from 2015 to 2020 on happiness in countries around the world</p>
+      </main>
+    </Container>
   );
 }
 

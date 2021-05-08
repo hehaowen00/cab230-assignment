@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 
-import { REGISTER_URL } from '../util';
+import { REGISTER_URL } from '../utils/definitions';
 
 const ALERTS = {
   201: {
@@ -20,7 +22,15 @@ const ALERTS = {
   409: { type: 'danger', msg: 'Error! User already exists' },
 };
 
-function Register() {
+function Register({ authenticated }) {
+  const history = useHistory();
+
+  useEffect(() => {
+    if (authenticated) {
+      history.push('/');
+    }
+  });
+
   const [alert, setAlert] = useState(EMPTY);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,16 +65,9 @@ function Register() {
 
   return (
     <Container className='content'>
-      <Row>
-        <Col>&nbsp;</Col>
-        <Col xl='4' className='text-center'>
-          <h4>Register</h4>
-        </Col>
-        <Col>&nbsp;</Col>
-      </Row>
-      <Row>
-        <Col>&nbsp;</Col>
-        <Col md='7' lg='7' xl='5' >
+      <Row className='d-flex justify-content-center'>
+        <Col md='7' lg='8' xl='5' >
+          <span className='text-center'><h4>Register</h4></span>
           <Form onSubmit={submitForm}>
             <Form.Group controlId='registration'>
               <Form.Label>Email Address</Form.Label>
@@ -84,11 +87,16 @@ function Register() {
             <Button className='btn-block' variant='primary' type='submit'>Register</Button>
           </Form>
         </Col>
-        <Col>&nbsp;</Col>
       </Row>
     </Container>
   );
 }
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    authenticated: state.authenticated
+  }
+};
+
+export default connect(mapStateToProps)(Register);
 

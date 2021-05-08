@@ -23,3 +23,10 @@ body {
   flex-shrink: 0;
   min-height: -webkit-fill-available;
 }
+
+.content {
+  padding-top: 4%;
+}
+.content-1 {
+  padding-top: 1%;
+}
