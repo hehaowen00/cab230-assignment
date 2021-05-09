@@ -2,8 +2,6 @@ import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import { useDispatch } from 'react-redux';
-
 function Navigation() {
   return (
     <Navbar bg='light' expand='lg' variant='light'>
@@ -21,7 +19,7 @@ function Navigation() {
           </LinkContainer>
         </Nav>
         <Nav className='ml-auto'>
-          <NavDropdown title="Account" id="basic-nav-dropdown">
+          <NavDropdown title='Account' id='basic-nav-dropdown'>
             <LinkContainer to='/login'>
               <NavDropdown.Item>Login</NavDropdown.Item>
             </LinkContainer>
@@ -36,4 +34,3 @@ function Navigation() {
 }
 
 export default Navigation;
-

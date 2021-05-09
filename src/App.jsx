@@ -20,11 +20,8 @@ import { getJWT } from './utils/jwt';
 
 function App({ setAuth }) {
   useEffect(() => {
-    // fetch rankings
-    // check if user jwt is set
-    // check if jwt is valid
     let res = getJWT();
-    if (res.type == 'success') {
+    if (res.type === 'success') {
       setAuth(res.email);
     }
   });

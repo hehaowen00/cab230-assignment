@@ -22,6 +22,16 @@ export const FACTORS_URL = {
 
 // convert country name to ISO alpha-2 code
 export const getCountryCode = (name) => {
+  if (name === 'Somalia' || name === 'Somaliland region' || name === 'Somaliland Region') {
+    return 'SO';
+  }
+  if (name === 'Sudan' || name === 'South Sudan') {
+    return 'SD';
+  }
+  if (name === 'North Macedonia') {
+    return 'MK';
+  }
+
   return Object.keys(isoCountries).find(key => isoCountries[key] === name);
 };
 
@@ -53,7 +63,7 @@ const isoCountries = {
   'BM': 'Bermuda',
   'BT': 'Bhutan',
   'BO': 'Bolivia',
-  'BA': 'Bosnia And Herzegovina',
+  'BA': 'Bosnia and Herzegovina',
   'BW': 'Botswana',
   'BV': 'Bouvet Island',
   'BR': 'Brazil',
@@ -75,11 +85,11 @@ const isoCountries = {
   'CC': 'Cocos (Keeling) Islands',
   'CO': 'Colombia',
   'KM': 'Comoros',
-  'CG': 'Congo',
-  'CD': 'Congo, Democratic Republic',
+  'CG': 'Congo (Brazzaville)',
+  'CD': 'Congo (Kinshasa)',
   'CK': 'Cook Islands',
   'CR': 'Costa Rica',
-  'CI': 'Cote D\'Ivoire',
+  'CI': 'Ivory Coast',
   'HR': 'Croatia',
   'CU': 'Cuba',
   'CY': 'Cyprus',
@@ -128,7 +138,7 @@ const isoCountries = {
   'IS': 'Iceland',
   'IN': 'India',
   'ID': 'Indonesia',
-  'IR': 'Iran, Islamic Republic Of',
+  'IR': 'Iran',
   'IQ': 'Iraq',
   'IE': 'Ireland',
   'IM': 'Isle Of Man',
@@ -141,15 +151,15 @@ const isoCountries = {
   'KZ': 'Kazakhstan',
   'KE': 'Kenya',
   'KI': 'Kiribati',
-  'KR': 'Korea',
+  'KR': 'South Korea',
   'KW': 'Kuwait',
   'KG': 'Kyrgyzstan',
-  'LA': 'Lao People\'s Democratic Republic',
+  'LA': 'Laos',
   'LV': 'Latvia',
   'LB': 'Lebanon',
   'LS': 'Lesotho',
   'LR': 'Liberia',
-  'LY': 'Libyan Arab Jamahiriya',
+  'LY': 'Libya',
   'LI': 'Liechtenstein',
   'LT': 'Lithuania',
   'LU': 'Luxembourg',
@@ -193,7 +203,7 @@ const isoCountries = {
   'OM': 'Oman',
   'PK': 'Pakistan',
   'PW': 'Palau',
-  'PS': 'Palestinian Territory, Occupied',
+  'PS': 'Palestinian Territories',
   'PA': 'Panama',
   'PG': 'Papua New Guinea',
   'PY': 'Paraguay',
@@ -206,7 +216,7 @@ const isoCountries = {
   'QA': 'Qatar',
   'RE': 'Reunion',
   'RO': 'Romania',
-  'RU': 'Russian Federation',
+  'RU': 'Russia',
   'RW': 'Rwanda',
   'BL': 'Saint Barthelemy',
   'SH': 'Saint Helena',
@@ -227,18 +237,16 @@ const isoCountries = {
   'SK': 'Slovakia',
   'SI': 'Slovenia',
   'SB': 'Solomon Islands',
-  'SO': 'Somalia',
   'ZA': 'South Africa',
   'GS': 'South Georgia And Sandwich Isl.',
   'ES': 'Spain',
   'LK': 'Sri Lanka',
-  'SD': 'Sudan',
   'SR': 'Suriname',
   'SJ': 'Svalbard And Jan Mayen',
   'SZ': 'Swaziland',
   'SE': 'Sweden',
   'CH': 'Switzerland',
-  'SY': 'Syrian Arab Republic',
+  'SY': 'Syria',
   'TW': 'Taiwan',
   'TJ': 'Tajikistan',
   'TZ': 'Tanzania',
@@ -247,7 +255,7 @@ const isoCountries = {
   'TG': 'Togo',
   'TK': 'Tokelau',
   'TO': 'Tonga',
-  'TT': 'Trinidad And Tobago',
+  'TT': 'Trinidad and Tobago',
   'TN': 'Tunisia',
   'TR': 'Turkey',
   'TM': 'Turkmenistan',
@@ -263,11 +271,12 @@ const isoCountries = {
   'UZ': 'Uzbekistan',
   'VU': 'Vanuatu',
   'VE': 'Venezuela',
-  'VN': 'Viet Nam',
+  'VN': 'Vietnam',
   'VG': 'Virgin Islands, British',
   'VI': 'Virgin Islands, U.S.',
   'WF': 'Wallis And Futuna',
   'EH': 'Western Sahara',
+  'XK': 'Kosovo',
   'YE': 'Yemen',
   'ZM': 'Zambia',
   'ZW': 'Zimbabwe'

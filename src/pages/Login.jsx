@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 import { Button, Container, Form, Row, Col } from 'react-bootstrap';
 
+import { UserLogin } from '../redux/actions/User';
 import { LOGIN_URL } from '../utils/definitions';
 import { storeJWT } from '../utils/jwt';
 
@@ -62,12 +63,10 @@ function Login({ authenticated, setAuth }) {
       const { token, expires_in } = json;
       let expires_at = new Date();
       expires_at.setSeconds(expires_at.getSeconds() + expires_in);
-      // console.log(token, expires_in, expires_at);
 
       storeJWT(email, token, expires_at);
       setAuth(email);
 
-      // redirect to home
       history.push('/');
     } else {
       setAlert(ALERTS[resp.status]);
@@ -90,7 +89,7 @@ function Login({ authenticated, setAuth }) {
                 minLength='8' placeholder='Password'
                 required={true} value={password} onChange={updatePassword} />
               <br />
-              <Form.Check type="checkbox" label="Show Password"
+              <Form.Check type='checkbox' label='Show Password'
                 value={isVisible} onChange={updateVisibility} />
             </Form.Group>
             <br />
@@ -105,13 +104,14 @@ function Login({ authenticated, setAuth }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: (email) => dispatch({ type: 'userLogin', payload: email })
+    setAuth: (email) => dispatch(UserLogin(email))
   };
 };
 
 const mapStateToProps = state => {
+  const { user } = state;
   return {
-    authenticated: state.authenticated,
+    authenticated: user.authenticated,
   };
 };
 

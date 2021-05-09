@@ -27,6 +27,12 @@ body {
 .content {
   padding-top: 4%;
 }
+
 .content-1 {
   padding-top: 1%;
+}
+
+* {
+  outline: none !important;
+  box-shadow: none !important;
 }

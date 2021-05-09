@@ -79,7 +79,7 @@ function Register({ authenticated }) {
                 minLength='8' placeholder='Password'
                 required={true} value={password} onChange={updatePassword} />
               <br />
-              <Form.Check type="checkbox" label="Show Password"
+              <Form.Check type='checkbox' label='Show Password'
                 value={isVisible} onChange={updateVisibility} />
             </Form.Group>
             <br />
@@ -93,8 +93,9 @@ function Register({ authenticated }) {
 }
 
 const mapStateToProps = state => {
+  const { user } = state;
   return {
-    authenticated: state.authenticated
+    authenticated: user.authenticated
   }
 };
 
