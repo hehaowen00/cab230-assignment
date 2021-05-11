@@ -1,4 +1,5 @@
 import { RANKINGS_URL, getCountryCode } from './definitions';
+const axios = require('axios');
 
 export function formatStr(format, ...args) {
   return format.replace(/{(\d+)}/g, function(match, num) {
@@ -9,24 +10,37 @@ export function formatStr(format, ...args) {
 export async function fetchRankings(year) {
   let url = formatStr(RANKINGS_URL.year, year);
 
-  let resp = await fetch(url, {
-    method: 'GET',
+  const config = {
+    method: 'get',
+    url,
     headers: {
-      accept: 'application/json'
-    }
-  });
+      'Accept': 'application/json'
+    },
+    timeout: 5000
+  };
 
-  if (resp.status === 200) {
+  return axios(config).catch(err => {
+    console.log('error', err);
+
+    throw {
+      type: 'error',
+      message: err
+    };
+  }).then(resp => {
+    if (!resp.status === 200) {
+      return {
+        type: 'error',
+        message: 'could not fetch json'
+      };
+    }
+
     return {
       type: 'success',
-      rankings: await resp.json()
+      rankings: resp.data
     };
-  }
-
-  return {
-    type: 'error',
-    message: 'failed to load rankings from API'
-  };
+  }).catch(err => {
+    return err;
+  });
 };
 
 export function mapRankingsToMapData(data) {

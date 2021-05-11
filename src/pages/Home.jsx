@@ -13,29 +13,28 @@ function Home({ rankings, years, addRankings }) {
   const lastYear = years[years.length - 1];
 
   const load = async (year) => {
-    let data = rankings[year];
+    let data = undefined;
 
-    if (!(year in rankings)) {
-      let res = await fetchRankings(year);
-
-      switch (res.type) {
-        case 'error':
-          console.log(res.message);
-          setStatus('error');
-          return;
-        case 'success':
-          console.log('Rankings loaded successfuly');
-          addRankings(parseInt(year), res.rankings);
-          data = res.rankings;
-          break;
-        default:
-          break;
-      }
+    if (year in rankings) {
+      console.log(`loaded rankings for ${year} from redux store`);
+      data = rankings[year];
     } else {
-      console.log('Rankings loaded from redux store');
+      let resp = await fetchRankings(year);
+      const { type } = resp;
+
+      if (type === 'error') {
+        setStatus('error');
+        return;
+      }
+
+      if (type === 'success') {
+        data = resp.rankings;
+        addRankings(year, data);
+      }
     }
 
     let { mapData } = mapRankingsToMapData(data);
+
     setMapData(mapData);
     setStatus('loaded');
   };

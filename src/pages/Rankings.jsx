@@ -1,20 +1,17 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
-import { Container, Alert, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
-
+import { Container, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
 
 import YearView from './views/YearView';
-import Country from './views/Country';
-
-import { AddRanking, AddRankings } from '../redux/actions/Data';
-import { fetchRankings } from '../utils/functions';
 
 function Rankings({ countriesList, years }) {
+  const sortedCountries = Array.from(countriesList).sort();
+
+  const [type, setType] = useState('');
   const [year1, setYear1] = useState(undefined);
   const [year2, setYear2] = useState(undefined);
-  const [type, setType] = useState('');
-
-  const sortedCountries = Array.from(countriesList).sort();
+  const [country1, setCountry1] = useState(undefined);
+  const [country2, setCountry2] = useState(undefined);
 
   const updateType = e => {
     let value = e.target.value;
@@ -40,10 +37,23 @@ function Rankings({ countriesList, years }) {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline'>
             <SelectElement text='Filter By' onChange={updateType} style={styles.spaced}>
-              <option key={1} value='country'>Country</option>
-              <option key={2} value='year'>Year</option>
+              <option key={1}>Country</option>
+              <option key={2}>Year</option>
             </SelectElement>
-            {type === 'year' &&
+            {type === 'Country' &&
+              <Fragment>
+                <SelectElement text='Country A' value={country1} onChange={updateHandler(setCountry1)}
+                  style={styles.spaced}>
+                  {sortedCountries.map((country, idx) =>
+                    <option key={idx + 1} selected={country1 === country}>{country}</option>)}
+                </SelectElement>
+                <SelectElement text='Country B' value={country2} onChange={updateHandler(setCountry2)}>
+                  {sortedCountries.map((country, idx) =>
+                    <option key={idx + 1} selected={country2 === country}>{country}</option>)}
+                </SelectElement>
+              </Fragment>
+            }
+            {type === 'Year' &&
               <Fragment>
                 <SelectElement
                   text='Year 1' value={year1} onChange={updateHandler(setYear1)}
@@ -72,14 +82,14 @@ function Rankings({ countriesList, years }) {
           </Form>
         </Navbar.Collapse>
       </Navbar>
-      {type === 'year' &&
+      {type === 'Year' &&
         <Fragment>
           <Row style={{ height: 'calc(100% - 54px)', minWidth: '100%' }}>
             <Col style={{ height: '100%' }} >
-              {type === 'year' && year1 !== undefined && <YearView year={year1} />}
+              {year1 !== undefined && <YearView year={year1} />}
             </Col>
             <Col className='float-right' style={{ height: '100%', padding: 0 }} >
-              {type === 'year' && year2 !== undefined && <YearView year={year2} />}
+              {year2 !== undefined && <YearView year={year2} />}
             </Col>
           </Row>
         </Fragment>
