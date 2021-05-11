@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { Container, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
 
 import YearView from './views/YearView';
+import CountryView from './views/CountryView';
 
 function Rankings({ countriesList, years }) {
   const sortedCountries = Array.from(countriesList).sort();
 
+  const [plotType, setPlotType] = useState('rank');
   const [type, setType] = useState('');
   const [year1, setYear1] = useState(undefined);
   const [year2, setYear2] = useState(undefined);
@@ -37,17 +39,24 @@ function Rankings({ countriesList, years }) {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline'>
             <SelectElement text='Filter By' onChange={updateType} style={styles.spaced}>
+              <option key={0} selected={type == undefined}>Select</option>
               <option key={1}>Country</option>
               <option key={2}>Year</option>
             </SelectElement>
             {type === 'Country' &&
               <Fragment>
+                <SelectElement text='Plot' onChange={e => setPlotType(e.target.value)} style={styles.spaced}>
+                  <option key={1}>Rank</option>
+                  <option key={2}>Score</option>
+                </SelectElement>
                 <SelectElement text='Country A' value={country1} onChange={updateHandler(setCountry1)}
                   style={styles.spaced}>
+                  <option key={0} selected={country1 == undefined}>Select</option>
                   {sortedCountries.map((country, idx) =>
                     <option key={idx + 1} selected={country1 === country}>{country}</option>)}
                 </SelectElement>
                 <SelectElement text='Country B' value={country2} onChange={updateHandler(setCountry2)}>
+                  <option key={0} selected={country2 == undefined}>Select</option>
                   {sortedCountries.map((country, idx) =>
                     <option key={idx + 1} selected={country2 === country}>{country}</option>)}
                 </SelectElement>
@@ -58,6 +67,7 @@ function Rankings({ countriesList, years }) {
                 <SelectElement
                   text='Year 1' value={year1} onChange={updateHandler(setYear1)}
                   style={styles.spaced}>
+                  <option key={0} selected={year1 == undefined}>Select</option>
                   {years.map((year, idx) =>
                     <option
                       key={idx + 1}
@@ -69,6 +79,7 @@ function Rankings({ countriesList, years }) {
                 <SelectElement
                   text='Year 2' value={year2} onChange={updateHandler(setYear2)}
                   style={styles.spaced}>
+                  <option key={0} selected={year2 == undefined}>Select</option>
                   {years.map((year, idx) =>
                     <option
                       key={idx + 1}
@@ -94,7 +105,19 @@ function Rankings({ countriesList, years }) {
           </Row>
         </Fragment>
       }
-    </Container>
+      {type === 'Country' &&
+        <Fragment >
+          <Row style={{ height: 'calc(100% - 54px)', minWidth: '100%' }}>
+            <Col style={{ height: '100%' }} >
+              {country1 !== undefined && <CountryView plot={plotType} country={country1} />}
+            </Col>
+            <Col className='float-right' style={{ height: '100%', padding: 0 }} >
+              {country2 !== undefined && <CountryView plot={plotType} country={country2} />}
+            </Col>
+          </Row>
+        </Fragment>
+      }
+    </Container >
   );
 }
 
@@ -103,7 +126,6 @@ const SelectElement = ({ text, value, onChange, style, children }) => {
     <div className='input-group sm-5' style={style}>
       <span className='input-group-text'>{text}</span>
       <select className='form-select select' onChange={onChange}>
-        <option key={0} selected={value == undefined}>Select</option>
         {children}
       </select>
     </div>

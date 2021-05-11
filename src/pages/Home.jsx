@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { Container, Row, Col, Alert, Form } from 'react-bootstrap-v5';
@@ -61,9 +61,12 @@ function Home({ rankings, years, addRankings }) {
         {status === 'loaded' &&
           <Fragment><Form>
             <Form.Group>
-              <Form.Control as='select' onChange={e => updateYear(e)}>
-                {years.map((year, idx) => <option key={idx} selected={year === lastYear}>{year}</option>)}
-              </Form.Control>
+              <div className='input-group sm-5'>
+                <span className='input-group-text'>Year</span>
+                <Form.Control as='select' onChange={e => updateYear(e)}>
+                  {years.map((year, idx) => <option key={idx} selected={year === lastYear}>{year}</option>)}
+                </Form.Control>
+              </div>
             </Form.Group>
           </Form>
             <Row>

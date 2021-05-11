@@ -19,7 +19,6 @@ function YearView({ rankings, year, addRankings }) {
       data = rankings[year];
     } else {
       let resp = await fetchRankings(year);
-      console.log(resp)
       const { type } = resp;
 
       if (type === 'error') {

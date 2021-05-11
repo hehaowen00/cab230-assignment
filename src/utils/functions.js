@@ -1,5 +1,5 @@
 import { RANKINGS_URL, getCountryCode } from './definitions';
-const axios = require('axios');
+import axios from 'axios';
 
 export function formatStr(format, ...args) {
   return format.replace(/{(\d+)}/g, function(match, num) {
@@ -7,8 +7,47 @@ export function formatStr(format, ...args) {
   });
 };
 
-export async function fetchRankings(year) {
-  let url = formatStr(RANKINGS_URL.year, year);
+function replaceSpaces(str) {
+  return str.replace(' ', '%20');
+}
+
+export function fetchCountryRankings(country) {
+  const encoded = replaceSpaces(country);
+  const url = formatStr(RANKINGS_URL.country, encoded);
+
+  const config = {
+    method: 'get',
+    url,
+    headers: {
+      'Accept': 'application/json',
+    },
+    timeout: 1000
+  };
+
+  return axios(config).catch(err => {
+    console.log(err);
+
+    throw {
+      type: 'error',
+      message: err
+    };
+  }).then(resp => {
+    if (!resp.status === 200) {
+      return {
+        type: 'error',
+        message: 'could not fetch json',
+      };
+    }
+
+    return {
+      type: 'success',
+      data: resp.data,
+    };
+  }).catch(err => err);
+};
+
+export function fetchRankings(year) {
+  const url = formatStr(RANKINGS_URL.year, year);
 
   const config = {
     method: 'get',
@@ -38,9 +77,7 @@ export async function fetchRankings(year) {
       type: 'success',
       rankings: resp.data
     };
-  }).catch(err => {
-    return err;
-  });
+  }).catch(err => err);
 };
 
 export function mapRankingsToMapData(data) {

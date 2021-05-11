@@ -414,7 +414,6 @@ export const validCountries = [
   "Slovenia",
   "Somalia",
   "Somaliland Region",
-  "Somaliland region",
   "South Africa",
   "South Korea",
   "South Sudan",
