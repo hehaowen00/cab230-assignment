@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Container } from 'react-bootstrap';
+import { Container } from 'react-bootstrap-v5';
 import Sidebar from './components/Sidebar';
 
 import About from './pages/About';
@@ -65,6 +65,9 @@ const styles = {
   content: {
     margin: 0,
     width: 'calc(100% - 280px)',
+    overflowY: 'none',
+    height: '100vh',
+    maxHeight: '100%',
     alignItems: 'center',
   }
 }

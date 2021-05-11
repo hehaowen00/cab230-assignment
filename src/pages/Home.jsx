@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Row, Col, Alert, Form } from 'react-bootstrap';
-import { WorldMap } from "react-svg-worldmap"
+import { Container, Row, Col, Alert, Form } from 'react-bootstrap-v5';
+import { WorldMap } from 'react-svg-worldmap'
 
 import { AddRankings } from '../redux/actions/Data';
 import { fetchRankings, mapRankingsToMapData } from '../utils/functions';
@@ -46,7 +46,7 @@ function Home({ rankings, years, addRankings }) {
 
   useEffect(() => {
     load(years[years.length - 1]);
-  }, [rankings, addRankings, years]);
+  }, []);
 
   return (
     <Container fluid className='content-1'>
@@ -63,7 +63,7 @@ function Home({ rankings, years, addRankings }) {
           <Fragment><Form>
             <Form.Group>
               <Form.Control as='select' onChange={e => updateYear(e)}>
-                {years.map(year => <option selected={year === lastYear}>{year}</option>)}
+                {years.map((year, idx) => <option key={idx} selected={year === lastYear}>{year}</option>)}
               </Form.Control>
             </Form.Group>
           </Form>

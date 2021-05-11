@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
-import { Button, Container, Form, Row, Col } from 'react-bootstrap';
+import { Button, Container, Form, Row, Col } from 'react-bootstrap-v5';
 
 import { UserLogin } from '../redux/actions/User';
 import { LOGIN_URL } from '../utils/definitions';
@@ -94,7 +94,7 @@ function Login({ authenticated, setAuth }) {
             </Form.Group>
             <br />
             <HiddenAlert alert={alert} set={setAlert} />
-            <Button className='btn-block' variant='primary' type='submit'>Login</Button>
+            <Button className='col-12' variant='primary' type='submit'>Login</Button>
           </Form>
         </Col>
       </Row>

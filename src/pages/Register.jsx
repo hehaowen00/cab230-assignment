@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Button, Container, Form, Row, Col } from 'react-bootstrap';
+import { Button, Container, Form, Row, Col } from 'react-bootstrap-v5';
 import { Link } from 'react-router-dom';
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 
@@ -84,7 +84,7 @@ function Register({ authenticated }) {
             </Form.Group>
             <br />
             <HiddenAlert alert={alert} set={setAlert} />
-            <Button className='btn-block' variant='primary' type='submit'>Register</Button>
+            <Button className='col-12' variant='primary' type='submit'>Register</Button>
           </Form>
         </Col>
       </Row>

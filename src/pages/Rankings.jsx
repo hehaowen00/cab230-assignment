@@ -1,64 +1,116 @@
-import React, { useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Container, Row, Col, Button, Form, FormControl, Navbar, Nav } from 'react-bootstrap';
+import { Container, Alert, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
+
+
+import YearView from './views/YearView';
+import Country from './views/Country';
 
 import { AddRanking, AddRankings } from '../redux/actions/Data';
 import { fetchRankings } from '../utils/functions';
 
-function Rankings({ rankings, addRankings }) {
-  const [status, setStatus] = useState('');
+function Rankings({ countriesList, years }) {
+  const [year1, setYear1] = useState(undefined);
+  const [year2, setYear2] = useState(undefined);
+  const [type, setType] = useState('');
 
-  const load = async (year) => {
-    let data = rankings[year];
+  const sortedCountries = Array.from(countriesList).sort();
 
-    if (!(year in rankings)) {
-      let res = await fetchRankings(year);
+  const updateType = e => {
+    let value = e.target.value;
+    setType(value);
+  };
 
-      switch (res.type) {
-        case 'error':
-          console.log(res.message);
-          setStatus('error');
-          return;
-        case 'success':
-          console.log('Rankings loaded successfuly');
-          addRankings(parseInt(year), res.rankings);
-          data = res.rankings;
-          break;
-        default:
-          break;
+  const updateHandler = handler => {
+    return (e) => {
+      let { value } = e.target;
+      if (value === 'Select') {
+        handler(undefined);
+        return;
       }
-    } else {
-      console.log('Rankings loaded from redux store');
-    }
 
-    setStatus('loaded');
+      handler(value);
+    };
   };
 
   return (
     <Container fluid className='content-1' style={{ padding: 0, margin: 0 }}>
-      <Navbar bg="light" variant='light' sticky='top'>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-          </Nav>
-    <Form inline>
-      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-primary">Search</Button>
-    </Form>
+      <Navbar bg='light' variant='light' sticky='top'>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav'>
+          <Form className='d-flex form-inline'>
+            <SelectElement text='Filter By' onChange={updateType} style={styles.spaced}>
+              <option key={1} value='country'>Country</option>
+              <option key={2} value='year'>Year</option>
+            </SelectElement>
+            {type === 'year' &&
+              <Fragment>
+                <SelectElement
+                  text='Year 1' value={year1} onChange={updateHandler(setYear1)}
+                  style={styles.spaced}>
+                  {years.map((year, idx) =>
+                    <option
+                      key={idx + 1}
+                      value={year}
+                      selected={Number(year1) === year}>
+                      {year}
+                    </option>)}
+                </SelectElement>
+                <SelectElement
+                  text='Year 2' value={year2} onChange={updateHandler(setYear2)}
+                  style={styles.spaced}>
+                  {years.map((year, idx) =>
+                    <option
+                      key={idx + 1}
+                      value={year}
+                      selected={Number(year2) == year}>
+                      {year}
+                    </option>)}
+                </SelectElement>
+              </Fragment>
+            }
+          </Form>
         </Navbar.Collapse>
       </Navbar>
+      {type === 'year' &&
+        <Fragment>
+          <Row style={{ height: 'calc(100% - 54px)', minWidth: '100%' }}>
+            <Col style={{ height: '100%' }} >
+              {type === 'year' && year1 !== undefined && <YearView year={year1} />}
+            </Col>
+            <Col className='float-right' style={{ height: '100%', padding: 0 }} >
+              {type === 'year' && year2 !== undefined && <YearView year={year2} />}
+            </Col>
+          </Row>
+        </Fragment>
+      }
     </Container>
   );
 }
 
-const mapStateToProps = state => {
-  return state;
+const SelectElement = ({ text, value, onChange, style, children }) => {
+  return (
+    <div className='input-group sm-5' style={style}>
+      <span className='input-group-text'>{text}</span>
+      <select className='form-select select' onChange={onChange}>
+        <option key={0} selected={value == undefined}>Select</option>
+        {children}
+      </select>
+    </div>
+  );
+}
+
+const styles = {
+  spaced: {
+    marginRight: '5px'
+  }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
+  let { data } = state;
   return {
-    addRankings: (year, data) => dispatch(AddRankings(year, data)),
-    addRanking: (year, data) => dispatch(AddRanking(year, data))
+    countriesList: data.countries,
+    years: data.years
   };
 };
 

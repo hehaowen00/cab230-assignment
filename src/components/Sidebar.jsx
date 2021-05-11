@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Fragment } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap-v5';
 
 function Sidebar({ authenticated, email }) {
   const footers = [
@@ -22,7 +22,6 @@ function Sidebar({ authenticated, email }) {
       </a>
       <hr />
       <ul className='nav nav-pills flex-column mb-auto'>
-        <NavItem path='/' text='Home' />
         <NavItem path='/rankings' text='Rankings' />
         {authenticated &&
           <NavItem path='/visualize' text='Visualize' />
@@ -43,7 +42,7 @@ function NavItem({ path, text }) {
   return (
     <li className='nav-item'>
       <LinkContainer exact to={path} activeClassName='active'>
-        <Button variant='link' className='nav-link text-left'>{text}</Button>
+        <Button variant='link' className='nav-link text-start'>{text}</Button>
       </LinkContainer>
     </li>
   );
