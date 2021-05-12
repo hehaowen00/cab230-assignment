@@ -8,9 +8,17 @@ export default function UserReducer(state = initialState, action) {
 
   switch (type) {
     case 'userLogin': {
+      console.log('user login');
       return {
         authenticated: true,
         email: payload
+      };
+    }
+    case 'userLogout': {
+      console.log('run');
+      return {
+        authenticated: false,
+        email: state.email
       };
     }
     default:

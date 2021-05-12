@@ -27,3 +27,8 @@ export function getJWT() {
 export function storeJWT(email, token, expires) {
   localStorage.setItem('jwt', JSON.stringify({ email, token, expires }));
 }
+
+export function deleteJWT() {
+  console.log('delete JWT');
+  localStorage.removeItem('jwt');
+}

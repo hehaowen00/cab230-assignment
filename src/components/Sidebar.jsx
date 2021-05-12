@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Fragment } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Button } from 'react-bootstrap-v5';
 
-function Sidebar({ authenticated, email }) {
+function Sidebar({ authenticated }) {
+  const [footer, setFooter] = useState(undefined);
+
   const footers = [
-    <span>Signed in as {email}</span>,
+    <NavItem path='/logout' text='Log Out' />,
     <Fragment>
       <NavItem path='/login' text='Login' />
       <NavItem path='/Register' text='Register' />
     </Fragment>
   ];
 
-  const footer = authenticated ? footers[0] : footers[1];
+
+  useEffect(() => {
+  console.log(authenticated);
+    setFooter(authenticated ? footers[0] : footers[1]);
+  }, [authenticated]);
 
   return (
     <div className='d-flex flex-column p-3 bg-light min-vh-100' style={styles.sidebar}>
@@ -24,7 +29,10 @@ function Sidebar({ authenticated, email }) {
       <ul className='nav nav-pills flex-column mb-auto'>
         <NavItem path='/rankings' text='Rankings' />
         {authenticated &&
-          <NavItem path='/visualize' text='Visualize' />
+          <Fragment>
+            <NavItem path='/factors' text='Factors' />
+            <NavItem path='/visualize' text='Visualize' />
+          </Fragment>
         }
       </ul>
       <ul className='nav nav-pills flex-row'>

@@ -40,12 +40,8 @@ const scoreSeries = (data) => {
   ];
 };
 
-function CountryView({ plot, country, rankings, years }) {
-  const [status, setStatus] = useState('loading');
-  const [countryData, setCountryData] = useState([]);
-  const [range, setRange] = useState([undefined, undefined]);
-
-  const options = {
+const options = ({ plot, years, country, range }) => {
+  return {
     chart: {
       id: 'basic-bar'
     },
@@ -58,17 +54,21 @@ function CountryView({ plot, country, rankings, years }) {
       title: { text: plot == 'Rank' ? 'Rank' : 'Score' },
     }
   };
+};
 
-  const series = plot === 'Rank' ? rankSeries(countryData) : scoreSeries(countryData);
+const series = (plot, data) => plot === 'Rank' ? rankSeries(data) : scoreSeries(data);
+
+function CountryView({ plot, country, rankings, years }) {
+  const [status, setStatus] = useState('loading');
+  const [countryData, setCountryData] = useState([]);
+  const [range, setRange] = useState([undefined, undefined]);
 
   const load = async () => {
     let data = undefined;
     let diff = [];
 
-    let hasAllYears = years.every(year => rankings.hasOwnProperty(year));
-
-    if (hasAllYears) {
-      for (let i = 0; i < years.length; i++) {
+    for (let i = 0; i < years.length; i++) {
+      if (years[i] in rankings) {
         let search = rankings[years[i]];
 
         if (search === []) {
@@ -80,10 +80,12 @@ function CountryView({ plot, country, rankings, years }) {
             diff.push(search[j]);
           }
         }
+      } else {
+        break;
       }
     }
 
-    if (!hasAllYears) {
+    if (diff.length < 5) {
       let resp = await fetchCountryRankings(country);
       const { type } = resp;
 
@@ -138,8 +140,8 @@ function CountryView({ plot, country, rankings, years }) {
           </AgGridReact>
           <br />
           <Chart
-            options={options}
-            series={series}
+            options={options({ plot, years, country, range })}
+            series={series(plot, countryData)}
             type='line'
           />
         </Fragment>

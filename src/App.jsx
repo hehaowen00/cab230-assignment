@@ -8,7 +8,9 @@ import Sidebar from './components/Sidebar';
 import About from './pages/About';
 import Home from './pages/Home'
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 import Rankings from './pages/Rankings';
+import Factors from './pages/Factors';
 import Register from './pages/Register';
 import Visualize from './pages/Visualize';
 
@@ -38,6 +40,9 @@ function App({ setAuth }) {
             <Route exact path='/rankings'>
               <Rankings />
             </Route>
+            <Route exact path='/factors'>
+              <Factors />
+            </Route>
             <Route exact path='/visualize'>
               <Visualize />
             </Route>
@@ -46,6 +51,9 @@ function App({ setAuth }) {
             </Route>
             <Route exact path='/login'>
               <Login />
+            </Route>
+            <Route exact path='/logout'>
+              <Logout />
             </Route>
             <Route exact path='/about'>
               <About />
