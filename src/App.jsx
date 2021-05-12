@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap-v5';
 import Sidebar from './components/Sidebar';
 
-import About from './pages/About';
 import Home from './pages/Home'
 import Login from './pages/Login';
 import Logout from './pages/Logout';
@@ -54,9 +53,6 @@ function App({ setAuth }) {
             </Route>
             <Route exact path='/logout'>
               <Logout />
-            </Route>
-            <Route exact path='/about'>
-              <About />
             </Route>
           </Switch>
         </div>

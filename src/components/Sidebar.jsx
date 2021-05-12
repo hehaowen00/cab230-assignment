@@ -33,9 +33,6 @@ function Sidebar({ authenticated }) {
           </Fragment>
         }
       </ul>
-      <ul className='nav nav-pills flex-row'>
-        <NavItem path='/about' text='About Us' />
-      </ul>
       <hr />
       <ul className='nav nav-pills flex-row'>
         {footer}

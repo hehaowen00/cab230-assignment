@@ -41,6 +41,9 @@ export default function DataReducer(state = initialState, action) {
         ...state
       };
     }
+    case 'setCountries': {
+      return state;
+    }
     default:
       return state
   }

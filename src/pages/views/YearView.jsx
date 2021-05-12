@@ -1,8 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { AddRankings } from '../../redux/actions/Data';
-import { fetchRankings } from '../../utils/functions';
+import { AddRankings } from '../../redux/actions/Data'; import { fetchRankings } from '../../utils/functions';
 
 import { Alert } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
@@ -49,7 +48,7 @@ function YearView({ rankings, year, addRankings }) {
         <AgGridReact className='ag-theme-alpine' pagination={true}
           paginationPageSize={25} rowData={yearData}
           containerStyle={{ height: '100%' }}>
-          <AgGridColumn field='rank' sortable={true}></AgGridColumn>
+          <AgGridColumn field='rank' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
           <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
           <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
         </AgGridReact>

@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { Container, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
 
+import SelectElement from '../components/SelectElement';
 import YearView from './views/YearView';
 import CountryView from './views/CountryView';
 
@@ -49,13 +50,13 @@ function Rankings({ countriesList, years }) {
                   <option key={1}>Rank</option>
                   <option key={2}>Score</option>
                 </SelectElement>
-                <SelectElement text='Country A' value={country1} onChange={updateHandler(setCountry1)}
+                <SelectElement text='Country 1' value={country1} onChange={updateHandler(setCountry1)}
                   style={styles.spaced}>
                   <option key={0} selected={country1 == undefined}>Select</option>
                   {sortedCountries.map((country, idx) =>
                     <option key={idx + 1} selected={country1 === country}>{country}</option>)}
                 </SelectElement>
-                <SelectElement text='Country B' value={country2} onChange={updateHandler(setCountry2)}>
+                <SelectElement text='Country 2' value={country2} onChange={updateHandler(setCountry2)}>
                   <option key={0} selected={country2 == undefined}>Select</option>
                   {sortedCountries.map((country, idx) =>
                     <option key={idx + 1} selected={country2 === country}>{country}</option>)}
@@ -69,10 +70,7 @@ function Rankings({ countriesList, years }) {
                   style={styles.spaced}>
                   <option key={0} selected={year1 == undefined}>Select</option>
                   {years.map((year, idx) =>
-                    <option
-                      key={idx + 1}
-                      value={year}
-                      selected={Number(year1) === year}>
+                    <option key={idx + 1} value={year} selected={Number(year2) == year}>
                       {year}
                     </option>)}
                 </SelectElement>
@@ -81,10 +79,7 @@ function Rankings({ countriesList, years }) {
                   style={styles.spaced}>
                   <option key={0} selected={year2 == undefined}>Select</option>
                   {years.map((year, idx) =>
-                    <option
-                      key={idx + 1}
-                      value={year}
-                      selected={Number(year2) == year}>
+                    <option key={idx + 1} value={year} selected={Number(year2) == year}>
                       {year}
                     </option>)}
                 </SelectElement>
@@ -95,40 +90,34 @@ function Rankings({ countriesList, years }) {
       </Navbar>
       <Row style={{ height: 'calc(100% - 54px)', maxWidth: '100%' }}>
         {type === 'Year' &&
-          <Fragment>
-            <Col style={{ height: '100%' }} >
-              {year1 !== undefined && <YearView year={year1} />}
-            </Col>
-            <Col className='float-right' style={{ height: '100%', padding: 0 }} >
-              {year2 !== undefined && <YearView year={year2} />}
-            </Col>
-          </Fragment>
+          <ContentView>
+            {year1 !== undefined && <YearView year={year1} />}
+            {year2 !== undefined && <YearView year={year2} />}
+          </ContentView>
         }
         {type === 'Country' &&
-          <Fragment >
-            <Col style={{ height: '100%' }} >
-              {country1 !== undefined && <CountryView plot={plotType} country={country1} />}
-            </Col>
-            <Col className='float-right' style={{ height: '100%', padding: 0 }} >
-              {country2 !== undefined && <CountryView plot={plotType} country={country2} />}
-            </Col>
-          </Fragment>
+          <ContentView>
+            {country1 !== undefined && <CountryView plot={plotType} country={country1} />}
+            {country2 !== undefined && <CountryView plot={plotType} country={country2} />}
+          </ContentView>
         }
       </Row>
     </Container >
   );
 }
 
-const SelectElement = ({ text, value, onChange, style, children }) => {
+const ContentView = ({ children }) => {
   return (
-    <div className='input-group sm-5' style={style}>
-      <span className='input-group-text'>{text}</span>
-      <select className='form-select select' onChange={onChange}>
-        {children}
-      </select>
-    </div>
+    <Fragment>
+      <Col style={{ height: '100%' }} >
+        {children[0]}
+      </Col>
+      <Col className='float-right' style={{ height: '100%', padding: 0 }} >
+        {children[1]}
+      </Col>
+    </Fragment>
   );
-}
+};
 
 const styles = {
   spaced: {
