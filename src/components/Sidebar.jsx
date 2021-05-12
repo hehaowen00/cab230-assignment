@@ -14,9 +14,7 @@ function Sidebar({ authenticated }) {
     </Fragment>
   ];
 
-
   useEffect(() => {
-  console.log(authenticated);
     setFooter(authenticated ? footers[0] : footers[1]);
   }, [authenticated]);
 

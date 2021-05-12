@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { RANKINGS_URL, FACTORS_URL } from '../utils/definitions';
 
-function Visualize({ authenticated }) {
+function Factors({ authenticated }) {
   const history = useHistory();
 
   if (!authenticated) {
@@ -23,5 +22,5 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Visualize);
+export default connect(mapStateToProps)(Factors);
 

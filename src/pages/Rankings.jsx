@@ -93,30 +93,28 @@ function Rankings({ countriesList, years }) {
           </Form>
         </Navbar.Collapse>
       </Navbar>
-      {type === 'Year' &&
-        <Fragment>
-          <Row style={{ height: 'calc(100% - 54px)', minWidth: '100%' }}>
+      <Row style={{ height: 'calc(100% - 54px)', maxWidth: '100%' }}>
+        {type === 'Year' &&
+          <Fragment>
             <Col style={{ height: '100%' }} >
               {year1 !== undefined && <YearView year={year1} />}
             </Col>
             <Col className='float-right' style={{ height: '100%', padding: 0 }} >
               {year2 !== undefined && <YearView year={year2} />}
             </Col>
-          </Row>
-        </Fragment>
-      }
-      {type === 'Country' &&
-        <Fragment >
-          <Row style={{ height: 'calc(100% - 54px)', minWidth: '100%' }}>
+          </Fragment>
+        }
+        {type === 'Country' &&
+          <Fragment >
             <Col style={{ height: '100%' }} >
               {country1 !== undefined && <CountryView plot={plotType} country={country1} />}
             </Col>
             <Col className='float-right' style={{ height: '100%', padding: 0 }} >
               {country2 !== undefined && <CountryView plot={plotType} country={country2} />}
             </Col>
-          </Row>
-        </Fragment>
-      }
+          </Fragment>
+        }
+      </Row>
     </Container >
   );
 }
