@@ -1,4 +1,4 @@
-import { RANKINGS_URL, getCountryCode } from './definitions';
+import { COUNTRIES_URL, FACTORS_URL, RANKINGS_URL, getCountryCode } from './definitions';
 import axios from 'axios';
 
 export function formatStr(format, ...args) {
@@ -11,7 +11,39 @@ function replaceSpaces(str) {
   return str.replace(' ', '%20');
 }
 
-export function fetchCountryRankings(country) {
+export function fetchCountries() {
+  const config = {
+    method: 'get',
+    url: COUNTRIES_URL,
+    headers: {
+      'Accept': 'application/json',
+    },
+    timeout: 1000,
+  };
+
+  return axios(config).catch(err => {
+    console.log(err);
+
+    throw {
+      type: 'error',
+      message: err.toString()
+    }
+  }).then(resp => {
+    if (!resp.status === 200) {
+      return {
+        type: 'error',
+        message: 'could not fetch countries',
+      };
+    }
+
+    return {
+      type: 'success',
+      data: resp.data,
+    };
+  }).catch(err => err);
+};
+
+export function fetchCountryRankings(country, year) {
   const encoded = replaceSpaces(country);
   const url = formatStr(RANKINGS_URL.country, encoded);
 
@@ -29,7 +61,7 @@ export function fetchCountryRankings(country) {
 
     throw {
       type: 'error',
-      message: err
+      message: err.toString()
     };
   }).then(resp => {
     if (!resp.status === 200) {
@@ -63,7 +95,7 @@ export function fetchRankings(year) {
 
     throw {
       type: 'error',
-      message: err
+      message: err.toString()
     };
   }).then(resp => {
     if (!resp.status === 200) {
@@ -79,6 +111,47 @@ export function fetchRankings(year) {
     };
   }).catch(err => err);
 };
+
+export function getFactorsYear(token, year, limit) {
+  const url = formatStr(FACTORS_URL.limited, year, limit);
+
+  console.log(url);
+
+  const config = {
+    method: 'get',
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    timeout: 5000
+  };
+
+  return axios(config).catch(err => {
+    console.log(err);
+
+    throw {
+      type: 'error',
+      message: err.toString()
+    };
+  }).then(resp => {
+    if (!resp.status === 200) {
+      return {
+        type: 'error',
+        message: 'could not fetch json'
+      };
+    }
+
+    return {
+      type: 'success',
+      rankings: resp.data
+    };
+  }).catch(err => err);
+}
+
+export function getFactorsCountry(country) {
+
+}
 
 export function mapRankingsToMapData(data) {
   let mapData = [];
@@ -102,3 +175,4 @@ export function mapRankingsToMapData(data) {
     errors
   };
 }
+

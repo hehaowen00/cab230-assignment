@@ -29,7 +29,6 @@ function Sidebar({ authenticated }) {
         {authenticated &&
           <Fragment>
             <NavItem path='/factors' text='Factors' />
-            <NavItem path='/visualize' text='Visualize' />
           </Fragment>
         }
       </ul>

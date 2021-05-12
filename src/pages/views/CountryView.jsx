@@ -7,14 +7,16 @@ import { Alert } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 
 const rankOptions = (country, range) => {
+  const [start, end] = range;
   return {
-    text: `${country} Happiness Rankings (${range[0]}- ${range[1]})`
+    text: `${country} Happiness Rankings (${start} - ${end})`
   };
 };
 
 const scoreOptions = (country, range) => {
+  const [start, end] = range;
   return {
-    text: `${country} Happiness Scores (${range[0]}- ${range[1]})`
+    text: `${country} Happiness Scores (${start} - ${end})`
   };
 };
 

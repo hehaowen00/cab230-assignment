@@ -6,9 +6,8 @@ import SelectElement from '../components/SelectElement';
 import YearView from './views/YearView';
 import CountryView from './views/CountryView';
 
-function Rankings({ countriesList, years }) {
-  const sortedCountries = Array.from(countriesList).sort();
-
+function Rankings({ countries, years }) {
+  console.log(countries);
   const [plotType, setPlotType] = useState('rank');
   const [type, setType] = useState('');
   const [year1, setYear1] = useState(undefined);
@@ -39,7 +38,7 @@ function Rankings({ countriesList, years }) {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline'>
-            <SelectElement text='Filter By' onChange={updateType} style={styles.spaced}>
+            <SelectElement text='Get' onChange={updateType} style={styles.spaced}>
               <option key={0} selected={type == undefined}>Select</option>
               <option key={1}>Country</option>
               <option key={2}>Year</option>
@@ -53,13 +52,15 @@ function Rankings({ countriesList, years }) {
                 <SelectElement text='Country 1' value={country1} onChange={updateHandler(setCountry1)}
                   style={styles.spaced}>
                   <option key={0} selected={country1 == undefined}>Select</option>
-                  {sortedCountries.map((country, idx) =>
-                    <option key={idx + 1} selected={country1 === country}>{country}</option>)}
+                  {countries.map((country, idx) =>
+                    <option key={idx + 1} selected={country1 === country}>{country}</option>)
+                  }
                 </SelectElement>
                 <SelectElement text='Country 2' value={country2} onChange={updateHandler(setCountry2)}>
                   <option key={0} selected={country2 == undefined}>Select</option>
-                  {sortedCountries.map((country, idx) =>
-                    <option key={idx + 1} selected={country2 === country}>{country}</option>)}
+                  {countries.map((country, idx) =>
+                    <option key={idx + 1} selected={country2 === country}>{country}</option>)
+                  }
                 </SelectElement>
               </Fragment>
             }
@@ -70,9 +71,10 @@ function Rankings({ countriesList, years }) {
                   style={styles.spaced}>
                   <option key={0} selected={year1 == undefined}>Select</option>
                   {years.map((year, idx) =>
-                    <option key={idx + 1} value={year} selected={Number(year2) == year}>
+                    <option key={idx + 1} value={year} selected={Number(year1) == year}>
                       {year}
-                    </option>)}
+                    </option>)
+                  }
                 </SelectElement>
                 <SelectElement
                   text='Year 2' value={year2} onChange={updateHandler(setYear2)}
@@ -81,7 +83,8 @@ function Rankings({ countriesList, years }) {
                   {years.map((year, idx) =>
                     <option key={idx + 1} value={year} selected={Number(year2) == year}>
                       {year}
-                    </option>)}
+                    </option>)
+                  }
                 </SelectElement>
               </Fragment>
             }
@@ -127,8 +130,9 @@ const styles = {
 
 const mapStateToProps = state => {
   let { data } = state;
+
   return {
-    countriesList: data.countries,
+    countries: data.countries,
     years: data.years
   };
 };

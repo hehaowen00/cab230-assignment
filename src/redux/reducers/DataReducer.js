@@ -3,7 +3,7 @@ import { validCountries } from '../../utils/definitions';
 const initialState = {
   rankings: {},
   factors: {},
-  countries: new Set(validCountries),
+  countries: [],
   years: [2015, 2016, 2017, 2018, 2019, 2020]
 };
 
@@ -16,7 +16,6 @@ export default function DataReducer(state = initialState, action) {
       let country = entry.country;
 
       let { countries, rankings } = state;
-      countries.add(country);
       rankings[year][country] = entry;
 
       return {
@@ -29,10 +28,6 @@ export default function DataReducer(state = initialState, action) {
       let { countries, rankings } = state;
       const { year, data } = payload;
 
-      for (let i = 0; i < data.length; i++) {
-        countries.add(data[i].country);
-      }
-
       rankings[year] = data;
 
       return {
@@ -42,7 +37,12 @@ export default function DataReducer(state = initialState, action) {
       };
     }
     case 'setCountries': {
-      return state;
+      let countries = payload;
+
+      return {
+        ...state,
+        countries,
+      };
     }
     default:
       return state
