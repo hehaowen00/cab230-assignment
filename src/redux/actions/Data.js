@@ -7,3 +7,7 @@ export function AddRanking(year, entry) {
     type: 'addRanking', payload: { year, entry }
   }
 }
+
+export function AddFactorsYear(year, data) {
+  return { type: 'addFactorsYear', payload: { year, data } };
+}

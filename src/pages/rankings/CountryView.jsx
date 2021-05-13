@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Chart from "react-apexcharts";
-import { fetchCountryRankings } from '../../utils/functions';
 
-import { Alert } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import Chart from "react-apexcharts";
+import { Alert, Col } from 'react-bootstrap-v5';
+
+import { fetchCountryRankings } from '../../utils/functions';
 
 function CountryView({ plot, country, rankings, years }) {
   const [status, setStatus] = useState('loading');
@@ -12,12 +13,11 @@ function CountryView({ plot, country, rankings, years }) {
   const [range, setRange] = useState([undefined, undefined]);
 
   const load = async () => {
-    console.log(plot);
     let data = undefined;
     let diff = [];
 
     for (let i = 0; i < years.length; i++) {
-      if (years[i] in rankings) {
+      if (years[i] in rankings && rankings[years[i]] !== undefined) {
         let search = rankings[years[i]];
 
         if (search === []) {
@@ -80,7 +80,22 @@ function CountryView({ plot, country, rankings, years }) {
     <Fragment>
       {country !== undefined &&
         <Fragment>
-          {status === 'loading' && <p>Loading data...</p>}
+          {status === 'loading' &&
+            <Col style={styles.alert}>
+              <br />
+              <Alert variant={'info'}>
+                Loading data...
+            </Alert>
+            </Col>
+          }
+          {status === 'error' &&
+            <Col style={styles.alert}>
+              <br />
+              <Alert variant={'danger'}>
+                Error: unable to fetch data from server
+            </Alert>
+            </Col>
+          }
           {status === 'loaded' &&
             <Fragment>
               <AgGridReact className='ag-theme-alpine' rowData={countryData}
@@ -97,16 +112,19 @@ function CountryView({ plot, country, rankings, years }) {
               />
             </Fragment>
           }
-          {status === 'error' &&
-            <Alert variant={'danger'}>
-              Error: unable to fetch data from server
-        </Alert>
-          }
         </Fragment>
       }
     </Fragment>
   );
 }
+
+const styles = {
+  alert: {
+    height: '100%',
+    paddingLeft: '20px',
+    paddingRight: '20px'
+  }
+};
 
 const rankOptions = (country, range) => {
   const [start, end] = range;

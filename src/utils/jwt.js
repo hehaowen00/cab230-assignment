@@ -10,7 +10,9 @@ export function getJWT() {
 
   let { email, token, expires } = JSON.parse(json);
 
-  if (new Date(expires) <= new Date()) {
+  if (new Date(expires).getTime() <= new Date()) {
+    localStorage.removeItem('jwt');
+
     return {
       type: 'error',
       message: 'jwt has expired'
@@ -20,7 +22,8 @@ export function getJWT() {
   return {
     type: 'success',
     email,
-    token
+    token,
+    expires
   };
 }
 

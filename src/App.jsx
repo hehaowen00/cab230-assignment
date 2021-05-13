@@ -56,6 +56,7 @@ function App({ setAuth, setCountries }) {
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/logout' component={Logout} />
+            <Route exact path='/denied' component={undefined} />
             </Switch>
           }
           {status === 'error' &&

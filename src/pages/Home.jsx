@@ -28,7 +28,7 @@ function Home({ rankings, years, addRankings }) {
       }
 
       if (type === 'success') {
-        data = resp.rankings;
+        data = resp.data;
         addRankings(year, data);
       }
     }

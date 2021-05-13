@@ -4,10 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 import { Container, Col, Row, Button, Form, Navbar } from 'react-bootstrap-v5';
 import SelectElement from '../components/SelectElement';
+import YearTable from './factors/YearTable';
 
 function Factors({ authenticated, countries, years }) {
   const history = useHistory();
-  console.log(countries);
 
   const [type, setType] = useState(undefined);
   const [year, setYear] = useState(undefined);
@@ -15,7 +15,7 @@ function Factors({ authenticated, countries, years }) {
   const [cYear1, setCYear1] = useState(undefined);
   const [country, setCountry] = useState(undefined);
   const [limit, setLimit] = useState(undefined);
-
+  const [run, setRun] = useState(false);
 
   let maximum = countries.length;
   const placeholder = `(max ${maximum})`;
@@ -33,9 +33,8 @@ function Factors({ authenticated, countries, years }) {
   };
 
   const onClick = (e) => {
-    if (type === 'Country') {
-    } else if (type === 'Year') {
-    }
+    setRun(true);
+    setTimeout(() => setRun(false), 500);
   };
 
   const checkLimit = (value) => {
@@ -106,24 +105,30 @@ function Factors({ authenticated, countries, years }) {
               <div className='input-group' style={styles.spaced}>
                 <span className='input-group-text'>Limit</span>
                 <input className='form-control' onChange={updateHandler(checkLimit)}
-                  type='text' value={limit === undefined ? '' : limit}
+                  type='text' value={limit ? limit : ''}
                   placeholder={placeholder} />
               </div>
             }
-            <Button variant='primary'>Load</Button>
+            {type && <Button variant='primary' onClick={onClick}>Load</Button>}
           </Form>
         </Navbar.Collapse>
       </Navbar >
-      <Row style={{ height: 'calc(100% - 54px)', maxWidth: '100%' }}>
+      <Row className='g-0' style={styles.contentRow}>
+        {type === 'Year' && <YearTable run={run} year={year} limit={limit} />}
       </Row>
     </Container >
   );
 }
 
 const styles = {
+  contentRow: {
+    height: 'calc(100% - 54px)',
+    maxWidth: '100%',
+    marginRight: '5px'
+  },
   spaced: {
     marginRight: '5px'
-  }
+  },
 };
 
 const mapStateToProps = state => {

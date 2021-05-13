@@ -1,7 +1,7 @@
 import { COUNTRIES_URL, FACTORS_URL, RANKINGS_URL, getCountryCode } from './definitions';
 import axios from 'axios';
 
-export function formatStr(format, ...args) {
+function formatStr(format, ...args) {
   return format.replace(/{(\d+)}/g, function(match, num) {
     return typeof args[num] != undefined ? args[num] : match
   });
@@ -11,7 +11,36 @@ function replaceSpaces(str) {
   return str.replace(' ', '%20');
 }
 
-export function fetchCountries() {
+async function fetchConfig(config, errMsg) {
+  return axios(config).catch(err => {
+    console.log(err);
+
+    throw {
+      type: 'error',
+      message: err.toString()
+    }
+  }).then(resp => {
+    if (resp.status === 401) {
+      return {
+        type: 'error',
+        message: 'unauthorized'
+      };
+    }
+    if (!resp.status === 200) {
+      return {
+        type: 'error',
+        message: errMsg,
+      };
+    }
+
+    return {
+      type: 'success',
+      data: resp.data,
+    };
+  }).catch(err => err);
+}
+
+export async function fetchCountries() {
   const config = {
     method: 'get',
     url: COUNTRIES_URL,
@@ -21,29 +50,10 @@ export function fetchCountries() {
     timeout: 1000,
   };
 
-  return axios(config).catch(err => {
-    console.log(err);
-
-    throw {
-      type: 'error',
-      message: err.toString()
-    }
-  }).then(resp => {
-    if (!resp.status === 200) {
-      return {
-        type: 'error',
-        message: 'could not fetch countries',
-      };
-    }
-
-    return {
-      type: 'success',
-      data: resp.data,
-    };
-  }).catch(err => err);
+  return await fetchConfig(config, 'could not fetch countries');
 };
 
-export function fetchCountryRankings(country, year) {
+export async function fetchCountryRankings(country) {
   const encoded = replaceSpaces(country);
   const url = formatStr(RANKINGS_URL.country, encoded);
 
@@ -56,29 +66,10 @@ export function fetchCountryRankings(country, year) {
     timeout: 1000
   };
 
-  return axios(config).catch(err => {
-    console.log(err);
-
-    throw {
-      type: 'error',
-      message: err.toString()
-    };
-  }).then(resp => {
-    if (!resp.status === 200) {
-      return {
-        type: 'error',
-        message: 'could not fetch json',
-      };
-    }
-
-    return {
-      type: 'success',
-      data: resp.data,
-    };
-  }).catch(err => err);
+  return await fetchConfig(config, `could not retrieve rankings for ${country}`);
 };
 
-export function fetchRankings(year) {
+export async function fetchRankings(year) {
   const url = formatStr(RANKINGS_URL.year, year);
 
   const config = {
@@ -90,32 +81,11 @@ export function fetchRankings(year) {
     timeout: 5000
   };
 
-  return axios(config).catch(err => {
-    console.log('error', err);
-
-    throw {
-      type: 'error',
-      message: err.toString()
-    };
-  }).then(resp => {
-    if (!resp.status === 200) {
-      return {
-        type: 'error',
-        message: 'could not fetch json'
-      };
-    }
-
-    return {
-      type: 'success',
-      rankings: resp.data
-    };
-  }).catch(err => err);
+  return await fetchConfig(config, `could not retrieve rankings for ${year}`);
 };
 
-export function getFactorsYear(token, year, limit) {
+export async function fetchFactorsLimit(token, year, limit) {
   const url = formatStr(FACTORS_URL.limited, year, limit);
-
-  console.log(url);
 
   const config = {
     method: 'get',
@@ -127,26 +97,7 @@ export function getFactorsYear(token, year, limit) {
     timeout: 5000
   };
 
-  return axios(config).catch(err => {
-    console.log(err);
-
-    throw {
-      type: 'error',
-      message: err.toString()
-    };
-  }).then(resp => {
-    if (!resp.status === 200) {
-      return {
-        type: 'error',
-        message: 'could not fetch json'
-      };
-    }
-
-    return {
-      type: 'success',
-      rankings: resp.data
-    };
-  }).catch(err => err);
+  return await fetchConfig(config, `could not retrieve factors for ${year} ${limit}`);
 }
 
 export function getFactorsCountry(country) {

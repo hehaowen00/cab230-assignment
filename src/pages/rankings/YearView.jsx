@@ -13,7 +13,7 @@ function YearView({ rankings, year, addRankings }) {
   const load = async () => {
     let data = undefined;
 
-    if (year in rankings) {
+    if (year in rankings && rankings[year] !== undefined) {
       console.log(`loaded rankings for ${year} from redux store`);
       data = rankings[year];
     } else {
@@ -26,7 +26,7 @@ function YearView({ rankings, year, addRankings }) {
       }
 
       if (type === 'success') {
-        data = resp.rankings;
+        data = resp.data;
         addRankings(year, data);
       }
     }
