@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import Chart from "react-apexcharts";
-import { Alert } from 'react-bootstrap-v5';
 
-function CountryView({ factors, country, start, end }) {
+import ErrorAlert from '../../components/ErrorAlert';
+import LoadingAlert from '../../components/LoadingAlert';
+
+import { Alert, Col } from 'react-bootstrap-v5';
+function CountryView({ factors, run, country, start, end }) {
   const [status, setStatus] = useState(undefined);
 
   const onLoad = async () => {
@@ -20,18 +23,20 @@ function CountryView({ factors, country, start, end }) {
 
   return (
     <Fragment>
-      {status === 'loading' && <p>Loading data...</p>}
-      {status === 'error' &&
-        <Col style={{ height: '100%' }} >
-          <Alert variant={'danger'}>
-            Error: unable to fetch data from server
-            </Alert>
-        </Col>
-      }
+      {status === 'loading' && <LoadingAlert />}
+      {status === 'error' && <ErrorAlert />}
       {status === 'loaded'}
     </Fragment>
   );
 }
+
+const styles = {
+  alert: {
+    height: '100%',
+    paddingLeft: '20px',
+    paddingRight: '20px'
+  }
+};
 
 const mapStateToProps = state => {
   const { data } = state;
@@ -41,3 +46,4 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(CountryView);
+

@@ -2,7 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { Container, Alert } from 'react-bootstrap-v5';
+import { Container } from 'react-bootstrap-v5';
+import ErrorAlert from './components/ErrorAlert';
 import Sidebar from './components/Sidebar';
 
 import Home from './pages/Home'
@@ -22,7 +23,7 @@ import { getJWT } from './utils/jwt';
 function App({ setAuth, setCountries }) {
   const [status, setStatus] = useState('loading');
 
-  const load = async () => {
+  const onStart = async () => {
     let res = await fetchCountries();
     if (res.type === 'success') {
       console.log('retrieved list of countries');
@@ -35,9 +36,10 @@ function App({ setAuth, setCountries }) {
   };
 
   useEffect(() => {
-    load();
+    onStart();
 
     let res = getJWT();
+
     if (res.type === 'success') {
       setAuth(res.email);
     }
@@ -56,16 +58,16 @@ function App({ setAuth, setCountries }) {
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/logout' component={Logout} />
-            <Route exact path='/denied' component={undefined} />
             </Switch>
           }
           {status === 'error' &&
-            <Fragment>
-              <br />
-              <Alert variant={'danger'} style={{ marginLeft: 20, marginRight: 20 }}>
-                Error: unable to fetch data from server
-            </Alert>
-            </Fragment>
+            <Container fluid className='content-1'>
+              <main className='flex-shrink-0'>
+                <h4>World Happiness Rankings</h4>
+                <p>Explore data from 2015 to 2020 on happiness in countries around the world</p>
+                <ErrorAlert padded={false} />
+              </main>
+            </Container>
           }
         </div>
       </Router>

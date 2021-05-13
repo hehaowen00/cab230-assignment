@@ -64,6 +64,7 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
       <Fragment>
         {status === 'loading' &&
           <Col style={styles.alert}>
+            <br />
             <Alert variant={'info'}>
               Loading data...
             </Alert>
@@ -73,26 +74,27 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
           <Col style={styles.alert}>
             <br />
             <Alert variant={'danger'}>
-              Error: unable to fetch data from server
+              <Alert.Heading>Error</Alert.Heading>
+              <p>Unable to fetch data from server</p>
             </Alert>
           </Col>
         }
         {status === 'loaded' && factorsData &&
-            <Col style={{width: '100%' }}>
-          <AgGridReact className='ag-theme-alpine' pagination={true}
-            paginationPageSize={25} rowData={factorsData}
-            containerStyle={{ height: '100%', width: '100%' }}>
-            <AgGridColumn field='rank' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
-            <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='economy' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='family' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='health' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='freedom' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='generosity' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-            <AgGridColumn field='trust' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-          </AgGridReact>
-            </Col>
+          <Col style={{ width: '100%' }}>
+            <AgGridReact className='ag-theme-alpine' pagination={true}
+              paginationPageSize={25} rowData={factorsData}
+              containerStyle={{ height: '100%', width: '100%' }}>
+              <AgGridColumn field='rank' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
+              <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='economy' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='family' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='health' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='freedom' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='generosity' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='trust' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+            </AgGridReact>
+          </Col>
         }
       </Fragment>
     </Fragment>

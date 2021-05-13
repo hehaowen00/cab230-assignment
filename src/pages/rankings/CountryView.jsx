@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import Chart from "react-apexcharts";
-import { Alert, Col } from 'react-bootstrap-v5';
+import ErrorAlert from '../../components/ErrorAlert';
+import LoadingAlert from '../../components/LoadingAlert';
 
 import { fetchCountryRankings } from '../../utils/functions';
 
@@ -80,22 +81,8 @@ function CountryView({ plot, country, rankings, years }) {
     <Fragment>
       {country !== undefined &&
         <Fragment>
-          {status === 'loading' &&
-            <Col style={styles.alert}>
-              <br />
-              <Alert variant={'info'}>
-                Loading data...
-            </Alert>
-            </Col>
-          }
-          {status === 'error' &&
-            <Col style={styles.alert}>
-              <br />
-              <Alert variant={'danger'}>
-                Error: unable to fetch data from server
-            </Alert>
-            </Col>
-          }
+          {status === 'loading' && <LoadingAlert />}
+          {status === 'error' && <ErrorAlert />}
           {status === 'loaded' &&
             <Fragment>
               <AgGridReact className='ag-theme-alpine' rowData={countryData}

@@ -1,8 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Row, Col, Alert, Form } from 'react-bootstrap-v5';
+import { Container, Row, Col, Form } from 'react-bootstrap-v5';
 import { WorldMap } from 'react-svg-worldmap'
+
+import ErrorAlert from '../components/ErrorAlert';
+import LoadingAlert from '../components/LoadingAlert';
 
 import { AddRankings } from '../redux/actions/Data';
 import { fetchRankings, mapRankingsToMapData } from '../utils/functions';
@@ -12,7 +15,7 @@ function Home({ rankings, years, addRankings }) {
   const [status, setStatus] = useState('loading');
   const lastYear = years[years.length - 1];
 
-  const load = async (year) => {
+  const loadYear = async (year) => {
     let data = undefined;
 
     if (year in rankings) {
@@ -40,11 +43,11 @@ function Home({ rankings, years, addRankings }) {
   };
 
   const updateYear = (e) => {
-    load(e.target.value.toString());
+    loadYear(e.target.value.toString());
   };
 
   useEffect(() => {
-    load(years[years.length - 1]);
+    loadYear(years[years.length - 1]);
   }, []);
 
   return (
@@ -52,12 +55,8 @@ function Home({ rankings, years, addRankings }) {
       <main className='flex-shrink-0'>
         <h4>World Happiness Rankings</h4>
         <p>Explore data from 2015 to 2020 on happiness in countries around the world</p>
-        {status === 'loading' && <p>Loading data...</p>}
-        {status === 'error' &&
-          <Alert variant={'danger'}>
-            Error: Unable to fetch data from server
-          </Alert>
-        }
+        {status === 'loading' && <LoadingAlert />}
+        {status === 'error' && <ErrorAlert />}
         {status === 'loaded' &&
           <Fragment><Form>
             <Form.Group>

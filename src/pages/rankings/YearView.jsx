@@ -5,6 +5,8 @@ import { AddRankings } from '../../redux/actions/Data'; import { fetchRankings }
 
 import { Alert } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import ErrorAlert from '../../components/ErrorAlert';
+import LoadingAlert from '../../components/LoadingAlert';
 
 function YearView({ rankings, year, addRankings }) {
   const [status, setStatus] = useState('loading');
@@ -45,7 +47,8 @@ function YearView({ rankings, year, addRankings }) {
     <Fragment>
       { year !== undefined &&
         <Fragment>
-          {status === 'loading' && <p>Loading data...</p>}
+          {status === 'loading' && <LoadingAlert />}
+          {status === 'error' && <ErrorAlert />}
           {status === 'loaded' &&
             <AgGridReact className='ag-theme-alpine' pagination={true}
               paginationPageSize={25} rowData={yearData}
@@ -54,11 +57,6 @@ function YearView({ rankings, year, addRankings }) {
               <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
               <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
             </AgGridReact>
-          }
-          {status === 'error' &&
-            <Alert variant={'danger'}>
-              Error: unable to fetch data from server
-        </Alert>
           }
         </Fragment>
       }

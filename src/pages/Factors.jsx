@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { Container, Col, Row, Button, Form, Navbar } from 'react-bootstrap-v5';
 import SelectElement from '../components/SelectElement';
 import YearTable from './factors/YearTable';
+import CountryView from './factors/CountryView';
 
 function Factors({ authenticated, countries, years }) {
   const history = useHistory();
@@ -115,6 +116,7 @@ function Factors({ authenticated, countries, years }) {
       </Navbar >
       <Row className='g-0' style={styles.contentRow}>
         {type === 'Year' && <YearTable run={run} year={year} limit={limit} />}
+        {type === 'Country' && <CountryView run={run} country={country} start={cYear} end={cYear1} />}
       </Row>
     </Container >
   );
