@@ -55,7 +55,7 @@ function Login({ authenticated, setAuth }) {
         password
       })
     });
-
+            
     let json = await resp.json();
 
     if (resp.status === 200) {

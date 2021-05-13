@@ -90,7 +90,7 @@ function Factors({ authenticated, countries, years }) {
             }
             {type === 'Country' &&
               <SelectElement
-                text='to' value={cYear1}
+                text='To' value={cYear1}
                 onChange={updateHandler(setCYear1)}
                 style={styles.spaced}>
                 <option key={0} selected={cYear1 === undefined}>Select</option>

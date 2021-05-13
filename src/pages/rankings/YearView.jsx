@@ -43,20 +43,24 @@ function YearView({ rankings, year, addRankings }) {
 
   return (
     <Fragment>
-      {status === 'loading' && <p>Loading data...</p>}
-      {status === 'loaded' &&
-        <AgGridReact className='ag-theme-alpine' pagination={true}
-          paginationPageSize={25} rowData={yearData}
-          containerStyle={{ height: '100%' }}>
-          <AgGridColumn field='rank' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-          <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
-          <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-        </AgGridReact>
-      }
-      {status === 'error' &&
-        <Alert variant={'danger'}>
-          Error: unable to fetch data from server
+      { year !== undefined &&
+        <Fragment>
+          {status === 'loading' && <p>Loading data...</p>}
+          {status === 'loaded' &&
+            <AgGridReact className='ag-theme-alpine' pagination={true}
+              paginationPageSize={25} rowData={yearData}
+              containerStyle={{ height: '100%' }}>
+              <AgGridColumn field='rank' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
+              <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+            </AgGridReact>
+          }
+          {status === 'error' &&
+            <Alert variant={'danger'}>
+              Error: unable to fetch data from server
         </Alert>
+          }
+        </Fragment>
       }
     </Fragment>
   );
