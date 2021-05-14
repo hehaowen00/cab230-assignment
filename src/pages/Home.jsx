@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { Container, Row, Col, Form } from 'react-bootstrap-v5';
+import { Col, Container, Row, Form } from 'react-bootstrap-v5';
 import { WorldMap } from 'react-svg-worldmap'
 
 import ErrorAlert from '../components/ErrorAlert';

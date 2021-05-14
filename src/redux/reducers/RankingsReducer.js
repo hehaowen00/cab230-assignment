@@ -5,7 +5,7 @@ const initialState = {
   years: [undefined, undefined]
 };
 
-export default function(state = initialState, { type, sub, payload }) {
+export default function RankingsReducer(state = initialState, { type, sub, payload }) {
   if (type !== 'rankings' || !sub || !(sub in state)) {
     return state;
   }

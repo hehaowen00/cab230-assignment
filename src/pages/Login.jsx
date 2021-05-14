@@ -14,7 +14,7 @@ const ALERTS = {
   401: { type: 'danger', msg: 'Error! Incorrect email or password' },
 };
 
-function Login({ authenticated, setAuth }) {
+function Login({ authenticated, redirect, setAuth }) {
   const history = useHistory();
 
   useEffect(() => {
@@ -104,7 +104,8 @@ function Login({ authenticated, setAuth }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: (email) => dispatch(UserLogin(email))
+    setAuth: email => dispatch(UserLogin(email)),
+    clearRedirect: () => dispatch({ type: 'clearRedirect' })
   };
 };
 
@@ -112,6 +113,7 @@ const mapStateToProps = state => {
   const { user } = state;
   return {
     authenticated: user.authenticated,
+    redirect: user.redirect
   };
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap-v5';
+import { Nav, NavDropdown, Navbar } from 'react-bootstrap-v5';
 import { LinkContainer } from 'react-router-bootstrap';
 
 function Navigation() {

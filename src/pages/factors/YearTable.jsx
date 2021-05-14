@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Col, Alert } from 'react-bootstrap-v5';
+import { Col } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import ErrorAlert from '../../components/ErrorAlert';
 import LoadingAlert from '../../components/LoadingAlert';
@@ -20,7 +20,7 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
     'generosity', 'trust'
   ];
 
-  const load = async () => {
+  const onLoad = async () => {
     setStatus('loading');
 
     let data = undefined;
@@ -57,7 +57,7 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
 
   useEffect(() => {
     if (run && year && limit) {
-      load();
+      onLoad();
     }
   }, [run, year, limit]);
 
@@ -80,14 +80,6 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
     </Fragment>
   );
 }
-
-const styles = {
-  alert: {
-    height: '100%',
-    paddingLeft: '20px',
-    paddingRight: '20px'
-  }
-};
 
 const mapDispatchToProps = dispatch => {
   return {

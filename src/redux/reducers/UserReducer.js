@@ -1,6 +1,7 @@
 const initialState = {
   authenticated: false,
-  email: ''
+  email: '',
+  redirect: undefined
 };
 
 export default function UserReducer(state = initialState, action) {

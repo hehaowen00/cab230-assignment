@@ -7,7 +7,7 @@ function LoadingAlert() {
       <br />
       <Alert variant={'info'}>
         Loading data...
-            </Alert>
+      </Alert>
     </Col>
   );
 }

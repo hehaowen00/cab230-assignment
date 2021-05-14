@@ -3,26 +3,26 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import { Col, Row, Form } from 'react-bootstrap-v5';
+import { Alert, Col, Row, Form } from 'react-bootstrap-v5';
 import Chart from "react-apexcharts";
 
 import ErrorAlert from '../../components/ErrorAlert';
 import LoadingAlert from '../../components/LoadingAlert';
 import SelectElement from '../../components/SelectElement';
 
-import { getJWT } from '../../utils/jwt';
 import { fetchFactorsCountry } from '../../utils/functions';
+import { getJWT } from '../../utils/jwt';
 
 function CountryView({ run, country, range, session, dispatch }) {
+  const { xAxis, checked, dataset } = session;
+  const { setXAxis, setChecked, setDataset, setLast, setOnce } = dispatch;
+  const [status, setStatus] = useState(undefined);
+
   const history = useHistory();
   const factors = [
     'rank', 'score', 'economy', 'family', 'health',
     'freedom', 'generosity', 'trust'
   ];
-
-  const { xAxis, checked, dataset } = session;
-  const { setXAxis, setChecked, setDataset, setLast } = dispatch;
-  const [status, setStatus] = useState(undefined);
 
   const setAxis = (factor, val) => {
     let idx = factors.findIndex(f => f === factor);
@@ -44,10 +44,16 @@ function CountryView({ run, country, range, session, dispatch }) {
   };
 
   const onLoad = async () => {
+    if (Number(range[0]) > Number(range[1])) {
+      setStatus('range error');
+      setOnce();
+      return;
+    }
+
     const { last } = session;
     let current = JSON.stringify({ country, range });
 
-    if (dataset && last === current) {
+    if (dataset && current === last) {
       console.log('using previous dataset for graph');
       setStatus('loaded');
       return;
@@ -80,11 +86,12 @@ function CountryView({ run, country, range, session, dispatch }) {
         return;
       }
 
-
       if (type === 'success') {
         console.log(`retrieved data from server for ${country} ${i}`)
         let results = resp.data;
-        data.push({ year: i, ...results[0] });
+        if (results.length > 0) {
+          data.push({ year: i, ...results[0] });
+        }
       }
     }
 
@@ -103,9 +110,17 @@ function CountryView({ run, country, range, session, dispatch }) {
     <Fragment>
       {status === 'loading' && <LoadingAlert />}
       {status === 'error' && <ErrorAlert />}
+      {status === 'range error' &&
+        <Col style={styles.alert}>
+          <br />
+          <Alert variant={'danger'}>
+            Error: starting year must be greater than or equal to end year
+          </Alert>
+        </Col>
+      }
       {status === 'loaded' &&
         <Col style={{ height: '100%' }}>
-          <Row className='g-0' style={{ height: '41%', overflowY: 'auto' }}>
+          <Row className='g-0' style={styles.tableContainer}>
             <AgGridReact className='ag-theme-alpine' pagination={true}
               paginationPageSize={25} rowData={dataset}
               containerStyle={{ height: '100%', width: '100%' }}>
@@ -114,7 +129,7 @@ function CountryView({ run, country, range, session, dispatch }) {
                 <AgGridColumn field={f} filter='agNumberColumnFilter' sortable={true}></AgGridColumn>)}
             </AgGridReact>
           </Row>
-          <Row className='g-0' style={{ height: '59%', maxHeight: '55%', marginTop: '0.1%', padding: '10px' }}>
+          <Row className='g-0' style={styles.graphOptions}>
             <Col style={{ maxWidth: '20%' }}>
               <SelectElement text='x-axis' onChange={xAxisChanged}>
                 <option key={0} selected={!xAxis}>Select</option>
@@ -134,7 +149,7 @@ function CountryView({ run, country, range, session, dispatch }) {
                   onChange={() => setAxis(f)}
                 />)}
             </Col>
-            <Col style={{ height: '100%', maxHeight: '100%', overflowY: 'hidden' }}>
+            <Col style={styles.graphContainer}>
               {xAxis && <Chart
                 options={generateOptions(xAxis, dataset)}
                 series={generateSeries(checked, dataset, factors)}
@@ -149,6 +164,29 @@ function CountryView({ run, country, range, session, dispatch }) {
     </Fragment>
   );
 }
+
+const styles = {
+  tableContainer: {
+    height: '41%',
+    overflowY: 'auto',
+  },
+  graphOptions: {
+    height: '59%',
+    maxHeight: '55%',
+    marginTop: '0.1%',
+    padding: '10px'
+  },
+  graphContainer: {
+    height: '100%',
+    maxHeight: '100%',
+    overflowY: 'hidden'
+  },
+  alert: {
+    height: '100%',
+    paddingLeft: '20px',
+    paddingRight: '20px'
+  }
+};
 
 const generateOptions = (xAxis, data) => {
   let axis = getDataPoints(data, xAxis);
@@ -200,7 +238,8 @@ const mapDispatchToProps = dispatch => {
       setXAxis: value => dispatch({ type: 'graph', sub: 'xAxis', payload: value }),
       setChecked: checked => dispatch({ type: 'graph', sub: 'checked', payload: checked }),
       setLast: last => dispatch({ type: 'graph', sub: 'last', payload: last }),
-      setDataset: data => dispatch({ type: 'graph', sub: 'dataset', payload: data })
+      setDataset: data => dispatch({ type: 'graph', sub: 'dataset', payload: data }),
+      setOnce: () => dispatch({ type: 'factors', sub: 'once', payload: false }),
     }
   }
 };
@@ -213,4 +252,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CountryView);
-

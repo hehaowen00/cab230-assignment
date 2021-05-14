@@ -1,18 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { AddRankings } from '../../redux/actions/Data'; import { fetchRankings } from '../../utils/functions';
-
-import { Alert } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import ErrorAlert from '../../components/ErrorAlert';
 import LoadingAlert from '../../components/LoadingAlert';
+
+import { AddRankings } from '../../redux/actions/Data';
+import { fetchRankings } from '../../utils/functions';
 
 function YearView({ rankings, year, addRankings }) {
   const [status, setStatus] = useState('loading');
   const [yearData, setYearData] = useState([]);
 
-  const load = async () => {
+  const onLoad = async () => {
     let data = undefined;
 
     if (year in rankings && rankings[year]) {
@@ -39,7 +39,7 @@ function YearView({ rankings, year, addRankings }) {
 
   useEffect(() => {
     if (year) {
-      load();
+      onLoad();
     }
   }, [year]);
 

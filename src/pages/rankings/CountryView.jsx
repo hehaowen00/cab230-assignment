@@ -13,7 +13,7 @@ function CountryView({ plot, country, rankings, years }) {
   const [countryData, setCountryData] = useState([]);
   const [range, setRange] = useState([undefined, undefined]);
 
-  const load = async () => {
+  const onLoad = async () => {
     let data = undefined;
     let diff = [];
 
@@ -73,7 +73,7 @@ function CountryView({ plot, country, rankings, years }) {
 
   useEffect(() => {
     if (country) {
-      load();
+      onLoad();
     }
   }, [country]);
 
@@ -104,14 +104,6 @@ function CountryView({ plot, country, rankings, years }) {
     </Fragment>
   );
 }
-
-const styles = {
-  alert: {
-    height: '100%',
-    paddingLeft: '20px',
-    paddingRight: '20px'
-  }
-};
 
 const rankOptions = (country, range) => {
   const [start, end] = range;
@@ -154,7 +146,7 @@ const options = ({ plot, years, country, range }) => {
       categories: years,
     },
     yaxis: {
-      title: { text: plot == 'Rank' ? 'Rank' : 'Score' },
+      title: { text: plot === 'Rank' ? 'Rank' : 'Score' },
     }
   };
 };

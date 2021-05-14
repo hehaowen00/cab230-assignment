@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Button, Container, Form, Row, Col } from 'react-bootstrap-v5';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap-v5';
 import { Link } from 'react-router-dom';
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 

@@ -11,7 +11,7 @@ const initialState = {
   dataset: undefined,
 };
 
-export default function(state = initialState, { type, sub, payload }) {
+export default function GraphReducer(state = initialState, { type, sub, payload }) {
   if (type !== 'graph' || !sub || !(sub in state)) {
     return state;
   }

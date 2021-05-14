@@ -3,8 +3,8 @@ const initialState = {
 };
 
 
-export default function(state = initialState, { type, sub, payload }) {
-  if (type !== 'home' && !sub || !(sub in state)) {
+export default function HomeReducer(state = initialState, { type, sub, payload }) {
+  if (type !== 'home' && (!sub || !(sub in state))) {
     return state;
   }
 

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Container, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
+import { Col, Container, Row, Form, Navbar } from 'react-bootstrap-v5';
 
 import CountrySelect from '../components/CountrySelect';
 import SelectElement from '../components/SelectElement';
@@ -27,8 +27,6 @@ function Rankings({ data, session, dispatch }) {
   };
 
   const inline = f => e => f(e.target.value);
-  const wrapFn = handler => inline(
-    value => handler(value === 'Select' ? undefined : value))
   const onSubmit = e => e.preventDefault();
 
   return (
@@ -44,8 +42,8 @@ function Rankings({ data, session, dispatch }) {
             {view === 'Country' &&
               <Fragment>
                 <SelectElement text='Plot' onChange={inline(setPlotType)} style={styles.spaced}>
-                  <option key={1}>Rank</option>
-                  <option key={2}>Score</option>
+                  <option key={0}>Rank</option>
+                  <option key={1}>Score</option>
                 </SelectElement>
                 {session.countries.map((c, idx) =>
                   <CountrySelect current={c} placeholder={'Country ' + (idx + 1)}
@@ -57,13 +55,11 @@ function Rankings({ data, session, dispatch }) {
               <Fragment>
                 {session.years.map((y, idx) =>
                   <SelectElement
-                    text={'Year ' + (idx + 1)} onChange={wrapFn(setYear(idx))}
-                    style={styles.spaced}>
-                    <option key={0} selected={!y}>Select</option>
+                    text={'Year ' + (idx + 1)} onChange={inline(setYear(idx))}
+                    style={styles.spaced} value={y}>
+                    <option key={0}>Select</option>
                     {years.map((year, idx) =>
-                      <option key={idx + 1} value={year} selected={Number(y) == year}>
-                        {year}
-                      </option>)
+                      <option key={idx + 1} value={year}>{year}</option>)
                     }
                   </SelectElement>
                 )}
@@ -103,6 +99,7 @@ const ContentView = ({ children }) => {
 
 const styles = {
   spaced: {
+    minWidth: '200px',
     marginRight: '5px'
   }
 };

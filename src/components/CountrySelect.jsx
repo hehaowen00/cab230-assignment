@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import { connect } from 'react-redux';
 import ComboBox from 'react-responsive-combo-box'
 import 'react-responsive-combo-box/dist/index.css'
 
 function CountrySelect({ countries, current, placeholder, onSelect }) {
-  const [country, setCountry] = useState(current);
-
   const inline = f => e => f(e.target.value);
+
   const isValid = value => {
-    console.log(value);
     if (countries.includes(value)) {
       onSelect(value);
     }
-    setCountry(value);
   };
 
   return (

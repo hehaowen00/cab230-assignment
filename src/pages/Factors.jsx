@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Container, Row, Button, InputGroup, Form, Navbar } from 'react-bootstrap-v5';
+import { Button, Container, Form, Navbar, Row} from 'react-bootstrap-v5';
 import CountrySelect from '../components/CountrySelect';
 import SelectElement from '../components/SelectElement';
 import YearTable from './factors/YearTable';
@@ -116,9 +116,9 @@ function RangeSelect({ range, years, setRange }) {
   return (
     <Fragment>
       <SelectElement
-        text='From' value={range[0]}
-        onChange={setRange(0)}
+        text='From'
         value={range[0]}
+        onChange={setRange(0)}
         style={styles.spaced}>
         <option key={0}></option>
         {years.map((y, idx) =>
@@ -128,7 +128,6 @@ function RangeSelect({ range, years, setRange }) {
       <SelectElement
         text='To' value={range[1]}
         onChange={setRange(1)}
-        value={range[1]}
         style={styles.spaced}>
         <option key={0}></option>
         {years.map((y, idx) =>
@@ -146,9 +145,9 @@ const styles = {
     marginRight: '5px'
   },
   spaced: {
+    minWidth: '200px',
     marginRight: '5px'
   },
-  select: { display: 'flex', minWidth: '200px', background: 'white', marginRight: '5px' }
 };
 
 const mapDispatchToProps = dispatch => {
