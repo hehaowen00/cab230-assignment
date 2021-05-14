@@ -13,22 +13,19 @@ import SelectElement from '../../components/SelectElement';
 import { getJWT } from '../../utils/jwt';
 import { fetchFactorsCountry } from '../../utils/functions';
 
-function CountryView({ run, country, start, end }) {
+function CountryView({ run, country, range, once, session, dispatch }) {
   const history = useHistory();
   const factors = [
     'rank', 'score', 'economy', 'family', 'health',
     'freedom', 'generosity', 'trust'
   ];
 
+  const { xAxis, checked, dataset } = session;
+  const { setXAxis, setChecked, setDataset } = dispatch;
   const [status, setStatus] = useState(undefined);
-  const [dataset, setDataset] = useState(undefined);
-  const [xAxis, setXAxis] = useState(undefined);
-  const [checked, setChecked] = useState(new Array(factors.length - 1).fill(false));
 
   const setAxis = (factor, val) => {
     let idx = factors.findIndex(f => f === factor);
-    console.log(factor, val, idx);
-
     if (idx > -1) {
       let temp = [...checked];
       temp[idx] = val === undefined ? !checked[idx] : val;
@@ -47,6 +44,21 @@ function CountryView({ run, country, start, end }) {
   };
 
   const onLoad = async () => {
+    if (dataset !== undefined && once) {
+      console.log('using previous dataset for graph');
+      setStatus('loaded');
+      return;
+    } else {
+      setDataset(undefined);
+    }
+
+    let [start, end] = range;
+
+    if (Number(start) > Number(end)) {
+      setStatus(undefined);
+      return;
+    }
+
     setStatus('loading');
 
     let data = [];
@@ -65,6 +77,7 @@ function CountryView({ run, country, start, end }) {
         return;
       }
 
+
       if (type === 'success') {
         console.log(`retrieved data from server for ${country} ${i}`)
         let results = resp.data;
@@ -77,10 +90,10 @@ function CountryView({ run, country, start, end }) {
   };
 
   useEffect(() => {
-    if (run && country && Number(start) < Number(end)) {
+    if (run && country) {
       onLoad();
     }
-  }, [run, country, start, end]);
+  }, [run, country, range]);
 
   return (
     <Fragment>
@@ -118,12 +131,13 @@ function CountryView({ run, country, start, end }) {
                 />)}
             </Col>
             <Col style={{ height: '100%', maxHeight: '100%', overflowY: 'hidden' }}>
-              <Chart
+              {xAxis && <Chart
                 options={generateOptions(xAxis, dataset)}
                 series={generateSeries(checked, dataset, factors)}
                 type='line'
                 height='100%'
-              />
+                width='99%'
+              />}
             </Col>
           </Row>
         </Col>
@@ -151,7 +165,7 @@ const generateSeries = (checked, data, factors) => {
 
   for (let i = 0; i < active.length; i++) {
     let points = getDataPoints(data, active[i]);
-    let entry = { name: active[i], data: points };
+    let entry = { name: toTitleCase(active[i]), data: points };
     series.push(entry);
   }
 
@@ -176,14 +190,23 @@ const getDataPoints = (data, factor) => {
 
 const toTitleCase = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-const mapStateToProps = state => {
-  const { data } = state;
+const mapDispatchToProps = dispatch => {
   return {
-    factors: data.factors,
-    years: data.years
+    dispatch: {
+      setXAxis: value => dispatch({ type: 'graph', sub: 'xAxis', payload: value }),
+      setChecked: checked => dispatch({ type: 'graph', sub: 'checked', payload: checked }),
+      setDataset: data => dispatch({ type: 'graph', sub: 'dataset', payload: data })
+    }
+  }
+};
+
+const mapStateToProps = state => {
+  const { factors, graph } = state;
+  return {
+    once: factors.once,
+    session: graph
   };
 };
 
-export default connect(mapStateToProps)(CountryView);
-
+export default connect(mapStateToProps, mapDispatchToProps)(CountryView);
 

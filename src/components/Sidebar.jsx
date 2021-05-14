@@ -20,9 +20,11 @@ function Sidebar({ authenticated }) {
 
   return (
     <div className='d-flex flex-column p-3 bg-light min-vh-100' style={styles.sidebar}>
-      <a href='/' className='d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none'>
+      <LinkContainer exact to='/home'>
+      <a className='d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none'>
         <span className='fs-4'>World Happiness</span>
       </a>
+      </LinkContainer>
       <hr />
       <ul className='nav nav-pills flex-column mb-auto'>
         <NavItem path='/rankings' text='Rankings' />

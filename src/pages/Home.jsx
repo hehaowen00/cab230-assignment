@@ -10,10 +10,12 @@ import LoadingAlert from '../components/LoadingAlert';
 import { AddRankings } from '../redux/actions/Data';
 import { fetchRankings, mapRankingsToMapData } from '../utils/functions';
 
-function Home({ rankings, years, addRankings }) {
+function Home({ data, session, dispatch }) {
+  const { rankings, years } = data;
+  const { addRankings, setYear } = dispatch;
+
   const [mapData, setMapData] = useState([]);
   const [status, setStatus] = useState('loading');
-  const lastYear = years[years.length - 1];
 
   const loadYear = async (year) => {
     let data = undefined;
@@ -43,12 +45,13 @@ function Home({ rankings, years, addRankings }) {
   };
 
   const updateYear = (e) => {
-    loadYear(e.target.value.toString());
+    setYear(e.target.value.toString());
   };
 
   useEffect(() => {
-    loadYear(years[years.length - 1]);
-  }, []);
+    let { year } = session;
+    loadYear(year);
+  }, [session]);
 
   return (
     <Container fluid className='content-1'>
@@ -63,7 +66,7 @@ function Home({ rankings, years, addRankings }) {
               <div className='input-group sm-5'>
                 <span className='input-group-text'>Year</span>
                 <Form.Control as='select' onChange={e => updateYear(e)}>
-                  {years.map((year, idx) => <option key={idx} selected={year === lastYear}>{year}</option>)}
+                  {years.map((year, idx) => <option key={idx} selected={year === Number(session.year)}>{year}</option>)}
                 </Form.Control>
               </div>
             </Form.Group>
@@ -90,15 +93,21 @@ const styles = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addRankings: (year, rankings) => dispatch(AddRankings(year, rankings))
+    dispatch: {
+      addRankings: (year, rankings) => dispatch(AddRankings(year, rankings)),
+      setYear: (year) => dispatch({ type: 'home', sub: 'year', payload: year })
+    }
   };
 };
 
 const mapStateToProps = state => {
-  const { data } = state;
+  const { data, home } = state;
   return {
-    rankings: data.rankings,
-    years: data.years
+    data: {
+      rankings: data.rankings,
+      years: data.years,
+    },
+    session: home
   };
 };
 

@@ -27,7 +27,7 @@ function Register({ authenticated }) {
 
   useEffect(() => {
     if (authenticated) {
-      history.push('/');
+      history.push('/home');
     }
   });
 

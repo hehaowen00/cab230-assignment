@@ -13,7 +13,7 @@ function replaceSpaces(str) {
 
 async function fetchConfig(config, errMsg) {
   return axios(config).catch(err => {
-    console.log(err);
+    console.log(err, config);
 
     throw {
       type: 'error',

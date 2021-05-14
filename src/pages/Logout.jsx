@@ -11,7 +11,6 @@ function Logout({ authenticated, logout }) {
   };
 
   useEffect(() => {
-    console.log(authenticated);
     load();
   });
 

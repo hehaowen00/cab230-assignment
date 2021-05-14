@@ -19,7 +19,7 @@ function Login({ authenticated, setAuth }) {
 
   useEffect(() => {
     if (authenticated) {
-      history.push('/');
+      history.push('/home');
     }
   });
 
@@ -67,7 +67,7 @@ function Login({ authenticated, setAuth }) {
       storeJWT(email, token, expires_at);
       setAuth(email);
 
-      history.push('/');
+      history.push('/home');
     } else {
       setAlert(ALERTS[resp.status]);
     }

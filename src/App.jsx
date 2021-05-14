@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap-v5';
 import ErrorAlert from './components/ErrorAlert';
@@ -52,12 +52,15 @@ function App({ setAuth, setCountries }) {
         <div style={styles.content}>
           {status === 'loaded' &&
             <Switch>
-              <Route exact path='/' component={Home} />
+              <Route exact path='/home' component={Home} />
               <Route exact path='/rankings' component={Rankings} />
               <Route exact path='/factors' component={Factors} />
               <Route exact path='/register' component={Register} />
               <Route exact path='/login' component={Login} />
               <Route exact path='/logout' component={Logout} />
+              <Route exact path='/'>
+                <Redirect exact to='/home' />
+              </Route>
             </Switch>
           }
           {status === 'error' &&

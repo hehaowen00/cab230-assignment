@@ -3,12 +3,12 @@ import { Alert, Col } from 'react-bootstrap-v5';
 
 function LoadingAlert() {
   return (
-        <Col style={styles.alert}>
-          <br />
-          <Alert variant={'info'}>
-            Loading data...
+    <Col style={styles.alert}>
+      <br />
+      <Alert variant={'info'}>
+        Loading data...
             </Alert>
-        </Col>
+    </Col>
   );
 }
 

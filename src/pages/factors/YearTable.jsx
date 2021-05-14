@@ -16,8 +16,8 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
   const [status, setStatus] = useState(undefined);
   const [factorsData, setFactorsData] = useState(undefined);
   const factorsList = [
-    'rank', 'country', 'score', 'economy', 'family', 'health',
-    'freedom', 'generosity', 'trust'
+    'rank', 'country', 'score', 'economy', 'family', 'health', 'freedom',
+    'generosity', 'trust'
   ];
 
   const load = async () => {

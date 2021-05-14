@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Container, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
 
@@ -6,46 +6,28 @@ import SelectElement from '../components/SelectElement';
 import YearView from './rankings/YearView';
 import CountryView from './rankings/CountryView';
 
-function Rankings({ countries, years }) {
-  const [plotType, setPlotType] = useState('Rank');
-  const [view, setView] = useState(undefined);
-
-  const [selection, setSelection] = useState({
-    years: [undefined, undefined],
-    countries: [undefined, undefined]
-  });
+function Rankings({ data, session, dispatch }) {
+  const { countries, years } = data;
+  const { view, plot } = session;
+  const { setView, setPlotType, setCountries, setYears } = dispatch;
 
   const setCountry = (idx) => {
     return (value) => {
-      let countries = selection.countries;
+      let countries = session.countries;
       countries[idx] = value;
-      setSelection({ ...selection, countries });
+      setCountries(countries);
     }
   };
 
-  const setYear = (idx) => {
-    return (value) => {
-      let years = selection.years;
-      years[idx] = value;
-      setSelection({ ...selection, years });
-    }
+  const setYear = idx => value => {
+    let years = session.years;
+    years[idx] = value;
+    setYears(years);
   };
 
-  const updatePlotType = e => {
-    setView(e.target.value);
-  };
-
-  const wrapFn = handler => {
-    return (e) => {
-      let { value } = e.target;
-      if (value === 'Select') {
-        handler(undefined);
-        return;
-      }
-
-      handler(value);
-    };
-  };
+  const inline = f => e => f(e.target.value);
+  const wrapFn = handler => inline(
+    value => handler(value === 'Select' ? undefined : value))
 
   return (
     <Container fluid className='content-1' style={{ padding: 0, margin: 0 }}>
@@ -53,19 +35,21 @@ function Rankings({ countries, years }) {
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline'>
-            <SelectElement text='Get' onChange={updatePlotType} style={styles.spaced}>
+            <SelectElement text='Get' onChange={inline(setView)} style={styles.spaced}>
               <option key={0} selected={!view}>Select</option>
-              <option key={1}>Country</option>
-              <option key={2}>Year</option>
+              <option key={1} selected={view === 'Country'} > Country</option>
+              <option key={2} selected={view === 'Year'}>Year</option>
             </SelectElement>
             {view === 'Country' &&
               <Fragment>
-                <SelectElement text='Plot' onChange={e => setPlotType(e.target.value)} style={styles.spaced}>
-                  <option key={1}>Rank</option>
-                  <option key={2}>Score</option>
+                <SelectElement text='Plot' onChange={inline(setPlotType)} style={styles.spaced}>
+                  <option key={1} selected={plot === 'Rank'}>Rank</option>
+                  <option key={2} selected={plot === 'Score'}>Score</option>
                 </SelectElement>
-                {selection.countries.map((c, idx) =>
-                  <SelectElement text={'Country ' + (idx + 1)} onChange={wrapFn(setCountry(idx))}>
+                {session.countries.map((c, idx) =>
+                  <SelectElement text={'Country ' + (idx + 1)} onChange={wrapFn(setCountry(idx))}
+                    style={styles.spaced}
+                  >
                     <option key={0} selected={!c}>Select</option>
                     {countries.map((country, idx) =>
                       <option key={idx + 1} selected={c === country}>{country}</option>)
@@ -76,7 +60,7 @@ function Rankings({ countries, years }) {
             }
             {view === 'Year' &&
               <Fragment>
-                {selection.years.map((y, idx) =>
+                {session.years.map((y, idx) =>
                   <SelectElement
                     text={'Year ' + (idx + 1)} onChange={wrapFn(setYear(idx))}
                     style={styles.spaced}>
@@ -96,12 +80,12 @@ function Rankings({ countries, years }) {
       <Row style={{ height: 'calc(100% - 54px)', maxWidth: '100%' }}>
         {view === 'Year' &&
           <ContentView>
-            {selection.years.map(year => <YearView year={year} />)}
+            {session.years.map(year => <YearView year={year} />)}
           </ContentView>
         }
         {view === 'Country' &&
           <ContentView>
-            {selection.countries.map(country => <CountryView plot={plotType} country={country} />)}
+            {session.countries.map(country => <CountryView plot={plot} country={country} />)}
           </ContentView>
         }
       </Row>
@@ -128,13 +112,31 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => {
-  let { data } = state;
-
+const mapDispatchToProps = dispatch => {
   return {
-    countries: data.countries,
-    years: data.years
+    dispatch: {
+      setView: view => dispatch(
+        { type: 'rankings', sub: 'view', payload: view }),
+      setPlotType: plot => dispatch(
+        { type: 'rankings', sub: 'plot', payload: plot }),
+      setCountries: countries => dispatch(
+        { type: 'rankings', sub: 'countries', payload: countries }),
+      setYears: years => dispatch(
+        { type: 'rankings', sub: 'years', payload: years })
+    }
   };
 };
 
-export default connect(mapStateToProps)(Rankings);
+const mapStateToProps = state => {
+  let { data, rankings } = state;
+
+  return {
+    data: {
+      countries: data.countries,
+      years: data.years,
+    },
+    session: rankings
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Rankings);
