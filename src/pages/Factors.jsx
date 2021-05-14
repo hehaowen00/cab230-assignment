@@ -59,7 +59,7 @@ function Factors({ authenticated, countries, years }) {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline'>
             <SelectElement text='Get' onChange={updateHandler(setType)} style={styles.spaced}>
-              <option key={0} selected={type == undefined}>Select</option>
+              <option key={0} selected={!type}>Select</option>
               <option key={1}>Country</option>
               <option key={2}>Year</option>
             </SelectElement>
@@ -67,19 +67,19 @@ function Factors({ authenticated, countries, years }) {
               <Fragment>
                 <SelectElement text='Country' value={country} onChange={updateHandler(setCountry)}
                   style={styles.spaced}>
-                  <option key={0} selected={country == undefined}>Select</option>
+                  <option key={0} selected={!country}>Select</option>
                   {countries.map((c, idx) =>
                     <option key={idx + 1} selected={country === c}>{c}</option>)
                   }
                 </SelectElement>
               </Fragment>
             }
-            {type !== undefined &&
+            {type &&
               <SelectElement
                 text={type === 'Country' ? 'From' : 'Year'} value={type === 'Country' ? cYear : year}
                 onChange={updateHandler(type === 'Country' ? setCYear : setYear)}
                 style={styles.spaced}>
-                <option key={0} selected={type === 'Country' ? cYear : year === undefined}>Select</option>
+                <option key={0} selected={type === 'Country' ? cYear : !year}>Select</option>
                 {years.map((y, idx) =>
                   <option key={idx + 1}
                     selected={Number(type === 'Country' ? cYear : year) == y}>
@@ -93,7 +93,7 @@ function Factors({ authenticated, countries, years }) {
                 text='To' value={cYear1}
                 onChange={updateHandler(setCYear1)}
                 style={styles.spaced}>
-                <option key={0} selected={cYear1 === undefined}>Select</option>
+                <option key={0} selected={!cYear1}>Select</option>
                 {years.map((y, idx) =>
                   <option key={idx + 1}
                     selected={Number(cYear1) == y}>

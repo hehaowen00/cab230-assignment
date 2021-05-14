@@ -121,7 +121,7 @@ export function mapRankingsToMapData(data) {
     let { country, score } = entry;
     let code = getCountryCode(country);
 
-    if (code !== undefined) {
+    if (code) {
       mapData.push({ country: getCountryCode(country), value: score });
     } else {
       console.log('Unable to get country code for', country);

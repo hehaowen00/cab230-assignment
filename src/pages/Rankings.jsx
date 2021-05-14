@@ -54,7 +54,7 @@ function Rankings({ countries, years }) {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline'>
             <SelectElement text='Get' onChange={updatePlotType} style={styles.spaced}>
-              <option key={0} selected={view == undefined}>Select</option>
+              <option key={0} selected={!view}>Select</option>
               <option key={1}>Country</option>
               <option key={2}>Year</option>
             </SelectElement>
@@ -66,7 +66,7 @@ function Rankings({ countries, years }) {
                 </SelectElement>
                 {selection.countries.map((c, idx) =>
                   <SelectElement text={'Country ' + (idx + 1)} onChange={wrapFn(setCountry(idx))}>
-                    <option key={0} selected={c == undefined}>Select</option>
+                    <option key={0} selected={!c}>Select</option>
                     {countries.map((country, idx) =>
                       <option key={idx + 1} selected={c === country}>{country}</option>)
                     }
@@ -80,7 +80,7 @@ function Rankings({ countries, years }) {
                   <SelectElement
                     text={'Year ' + (idx + 1)} onChange={wrapFn(setYear(idx))}
                     style={styles.spaced}>
-                    <option key={0} selected={y == undefined}>Select</option>
+                    <option key={0} selected={!y}>Select</option>
                     {years.map((year, idx) =>
                       <option key={idx + 1} value={year} selected={Number(y) == year}>
                         {year}

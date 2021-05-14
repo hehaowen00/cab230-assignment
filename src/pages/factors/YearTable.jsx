@@ -56,8 +56,7 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
   };
 
   useEffect(() => {
-    console.log(year, limit, run);
-    if (run && year !== undefined && limit !== undefined) {
+    if (run && year && limit) {
       load();
     }
   }, [run, year, limit]);

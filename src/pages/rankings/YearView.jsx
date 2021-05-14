@@ -15,7 +15,7 @@ function YearView({ rankings, year, addRankings }) {
   const load = async () => {
     let data = undefined;
 
-    if (year in rankings && rankings[year] !== undefined) {
+    if (year in rankings && rankings[year]) {
       console.log(`loaded rankings for ${year} from redux store`);
       data = rankings[year];
     } else {
@@ -38,14 +38,14 @@ function YearView({ rankings, year, addRankings }) {
   };
 
   useEffect(() => {
-    if (year !== undefined) {
+    if (year) {
       load();
     }
   }, [year]);
 
   return (
     <Fragment>
-      { year !== undefined &&
+      { year &&
         <Fragment>
           {status === 'loading' && <LoadingAlert />}
           {status === 'error' && <ErrorAlert />}

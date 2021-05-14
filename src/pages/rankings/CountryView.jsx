@@ -18,7 +18,7 @@ function CountryView({ plot, country, rankings, years }) {
     let diff = [];
 
     for (let i = 0; i < years.length; i++) {
-      if (years[i] in rankings && rankings[years[i]] !== undefined) {
+      if (years[i] in rankings && rankings[years[i]]) {
         let search = rankings[years[i]];
 
         if (search === []) {
@@ -72,14 +72,14 @@ function CountryView({ plot, country, rankings, years }) {
   };
 
   useEffect(() => {
-    if (country !== undefined) {
+    if (country) {
       load();
     }
   }, [country]);
 
   return (
     <Fragment>
-      {country !== undefined &&
+      {country &&
         <Fragment>
           {status === 'loading' && <LoadingAlert />}
           {status === 'error' && <ErrorAlert />}

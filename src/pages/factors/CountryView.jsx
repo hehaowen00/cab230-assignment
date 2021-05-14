@@ -77,7 +77,7 @@ function CountryView({ run, country, start, end }) {
   };
 
   useEffect(() => {
-    if (run && country != undefined && Number(start) < Number(end)) {
+    if (run && country && Number(start) < Number(end)) {
       onLoad();
     }
   }, [run, country, start, end]);
@@ -100,7 +100,7 @@ function CountryView({ run, country, start, end }) {
           <Row className='g-0' style={{ height: '59%', maxHeight: '55%', marginTop: '0.1%', padding: '10px' }}>
             <Col style={{ maxWidth: '20%' }}>
               <SelectElement text='x-axis' onChange={xAxisChanged}>
-                <option key={0} selected={xAxis === undefined}>Select</option>
+                <option key={0} selected={!xAxis}>Select</option>
                 <option key={1} value='year' selected={xAxis === 'year'}>Year</option>
                 {factors.map((f, idx) =>
                   <option key={idx + 2} value={f} selected={xAxis === f}>{toTitleCase(f)}</option>
