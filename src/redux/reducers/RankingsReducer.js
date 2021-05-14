@@ -1,5 +1,5 @@
 const initialState = {
-  view: undefined,
+  view: 'Country',
   plot: 'Rank',
   countries: [undefined, undefined],
   years: [undefined, undefined]

@@ -1,10 +1,10 @@
 import React from 'react';
 
-const SelectElement = ({ text, onChange, style, children }) => {
+const SelectElement = ({ text, value, onChange, style, children }) => {
   return (
-    <div className='input-group sm-5' style={style}>
+    <div className='input-group' style={style}>
       <span className='input-group-text'>{text}</span>
-      <select className='form-select select' onChange={onChange}>
+      <select className='form-select select' onChange={onChange} value={value}>
         {children}
       </select>
     </div>

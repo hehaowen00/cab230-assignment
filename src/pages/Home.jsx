@@ -53,6 +53,8 @@ function Home({ data, session, dispatch }) {
     loadYear(year);
   }, [session]);
 
+  const onSubmit = e => e.preventDefault();
+
   return (
     <Container fluid className='content-1'>
       <main className='flex-shrink-0'>
@@ -61,16 +63,17 @@ function Home({ data, session, dispatch }) {
         {status === 'loading' && <LoadingAlert />}
         {status === 'error' && <ErrorAlert />}
         {status === 'loaded' &&
-          <Fragment><Form>
-            <Form.Group>
-              <div className='input-group sm-5'>
-                <span className='input-group-text'>Year</span>
-                <Form.Control as='select' onChange={e => updateYear(e)}>
-                  {years.map((year, idx) => <option key={idx} selected={year === Number(session.year)}>{year}</option>)}
-                </Form.Control>
-              </div>
-            </Form.Group>
-          </Form>
+          <Fragment>
+            <Form onSubmit={onSubmit}>
+              <Form.Group>
+                <div className='input-group sm-5'>
+                  <span className='input-group-text'>Year</span>
+                  <Form.Control as='select' onChange={e => updateYear(e)}>
+                    {years.map((year, idx) => <option key={idx} selected={year === Number(session.year)}>{year}</option>)}
+                  </Form.Control>
+                </div>
+              </Form.Group>
+            </Form>
             <Row>
               <Col style={styles.mapContainer}>
                 <WorldMap size='xxl' data={mapData} color='gold' />

@@ -2,12 +2,13 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Container, Col, Row, Form, Navbar } from 'react-bootstrap-v5';
 
+import CountrySelect from '../components/CountrySelect';
 import SelectElement from '../components/SelectElement';
 import YearView from './rankings/YearView';
 import CountryView from './rankings/CountryView';
 
 function Rankings({ data, session, dispatch }) {
-  const { countries, years } = data;
+  const { years } = data;
   const { view, plot } = session;
   const { setView, setPlotType, setCountries, setYears } = dispatch;
 
@@ -28,33 +29,27 @@ function Rankings({ data, session, dispatch }) {
   const inline = f => e => f(e.target.value);
   const wrapFn = handler => inline(
     value => handler(value === 'Select' ? undefined : value))
+  const onSubmit = e => e.preventDefault();
 
   return (
     <Container fluid className='content-1' style={{ padding: 0, margin: 0 }}>
       <Navbar bg='light' variant='light' sticky='top'>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
-          <Form className='d-flex form-inline'>
-            <SelectElement text='Get' onChange={inline(setView)} style={styles.spaced}>
-              <option key={0} selected={!view}>Select</option>
-              <option key={1} selected={view === 'Country'} > Country</option>
-              <option key={2} selected={view === 'Year'}>Year</option>
+          <Form className='d-flex form-inline' onSubmit={onSubmit}>
+            <SelectElement text='Get' onChange={inline(setView)} style={styles.spaced} value={view}>
+              <option key={0}>Country</option>
+              <option key={1}>Year</option>
             </SelectElement>
             {view === 'Country' &&
               <Fragment>
                 <SelectElement text='Plot' onChange={inline(setPlotType)} style={styles.spaced}>
-                  <option key={1} selected={plot === 'Rank'}>Rank</option>
-                  <option key={2} selected={plot === 'Score'}>Score</option>
+                  <option key={1}>Rank</option>
+                  <option key={2}>Score</option>
                 </SelectElement>
                 {session.countries.map((c, idx) =>
-                  <SelectElement text={'Country ' + (idx + 1)} onChange={wrapFn(setCountry(idx))}
-                    style={styles.spaced}
-                  >
-                    <option key={0} selected={!c}>Select</option>
-                    {countries.map((country, idx) =>
-                      <option key={idx + 1} selected={c === country}>{country}</option>)
-                    }
-                  </SelectElement>)
+                  <CountrySelect current={c} placeholder={'Country ' + (idx + 1)}
+                    onSelect={setCountry(idx)} />)
                 }
               </Fragment>
             }
@@ -132,7 +127,6 @@ const mapStateToProps = state => {
 
   return {
     data: {
-      countries: data.countries,
       years: data.years,
     },
     session: rankings

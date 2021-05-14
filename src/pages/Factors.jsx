@@ -2,7 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Container, Row, Button, Form, Navbar } from 'react-bootstrap-v5';
+import { Container, Row, Button, InputGroup, Form, Navbar } from 'react-bootstrap-v5';
+import CountrySelect from '../components/CountrySelect';
 import SelectElement from '../components/SelectElement';
 import YearTable from './factors/YearTable';
 import CountryView from './factors/CountryView';
@@ -30,7 +31,7 @@ function Factors({ authenticated, data, session, dispatch }) {
 
   const onClick = () => {
     setRun(true);
-    setTimeout(() => setRun(false), 500);
+    setTimeout(() => setRun(false), 1000);
     setOnce(true);
   };
 
@@ -38,6 +39,7 @@ function Factors({ authenticated, data, session, dispatch }) {
     if (v === 'Country') {
       onClick();
     }
+    console.log(v);
     setView(v);
   }
 
@@ -61,27 +63,22 @@ function Factors({ authenticated, data, session, dispatch }) {
     }
   }, [authenticated]);
 
+  const onSubmit = e => e.preventDefault();
+
   return (
     <Container fluid className='content-1' style={{ padding: 0, margin: 0 }}>
       <Navbar bg='light' variant='light' sticky='top'>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
-          <Form className='d-flex form-inline'>
-            <SelectElement text='Get' onChange={handleSelect(onViewChange)}
-              style={styles.spaced}>
-              <option key={0} selected={!view}>Select</option>
-              <option key={1} selected={view === 'Country'}>Country</option>
-              <option key={2} selected={view === 'Year'}>Year</option>
+          <Form className='d-flex form-inline' onSubmit={onSubmit}>
+            <SelectElement text='Get' onChange={inline(onViewChange)}
+              style={styles.spaced} value={view}>
+              <option key={1}>Country</option>
+              <option key={2}>Year</option>
             </SelectElement>
             {view === 'Country' &&
               <Fragment>
-                <SelectElement text='Country' value={country}
-                  onChange={handleSelect(setCountry)} style={styles.spaced}>
-                  <option key={0} selected={!country}>Select</option>
-                  {countries.map((c, idx) =>
-                    <option key={idx + 1} selected={country === c}>{c}</option>)
-                  }
-                </SelectElement>
+                <CountrySelect current={country} onSelect={setCountry} />
                 <RangeSelect range={range} years={years} setRange={setYears} />
               </Fragment>
             }
@@ -91,12 +88,8 @@ function Factors({ authenticated, data, session, dispatch }) {
                   text='Year' value={year}
                   onChange={handleSelect(setYear)}
                   style={styles.spaced}>
-                  <option key={0} selected={!year}>Select</option>
-                  {years.map((y, idx) =>
-                    <option key={idx + 1}
-                      selected={Number(year) == y}>
-                      {y}
-                    </option>)
+                  <option key={0}></option>
+                  {years.map((y, idx) => <option key={idx + 1}>{y}</option>)
                   }
                 </SelectElement>
                 <div className='input-group' style={styles.spaced}>
@@ -125,25 +118,21 @@ function RangeSelect({ range, years, setRange }) {
       <SelectElement
         text='From' value={range[0]}
         onChange={setRange(0)}
+        value={range[0]}
         style={styles.spaced}>
-        <option key={0} selected={!range[0]}>Select</option>
+        <option key={0}></option>
         {years.map((y, idx) =>
-          <option key={idx + 1}
-            selected={Number(range[0]) == y}>
-            {y}
-          </option>)
+          <option key={idx + 1}>{y}</option>)
         }
       </SelectElement>
       <SelectElement
         text='To' value={range[1]}
         onChange={setRange(1)}
+        value={range[1]}
         style={styles.spaced}>
-        <option key={0} selected={!range[1]}>Select</option>
+        <option key={0}></option>
         {years.map((y, idx) =>
-          <option key={idx + 1}
-            selected={Number(range[1]) == y}>
-            {y}
-          </option>)
+          <option key={idx + 1}>{y}</option>)
         }
       </SelectElement>
     </Fragment>
@@ -159,6 +148,7 @@ const styles = {
   spaced: {
     marginRight: '5px'
   },
+  select: { display: 'flex', minWidth: '200px', background: 'white', marginRight: '5px' }
 };
 
 const mapDispatchToProps = dispatch => {

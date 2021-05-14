@@ -7,6 +7,7 @@ const generateArr = () => {
 const initialState = {
   xAxis: 'year',
   checked: generateArr(),
+  last: undefined,
   dataset: undefined,
 };
 

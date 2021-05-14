@@ -1,5 +1,5 @@
 const initialState = {
-  view: undefined,
+  view: 'Country',
   year: undefined,
   limit: undefined,
   country: undefined,

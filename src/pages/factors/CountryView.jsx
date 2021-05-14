@@ -13,7 +13,7 @@ import SelectElement from '../../components/SelectElement';
 import { getJWT } from '../../utils/jwt';
 import { fetchFactorsCountry } from '../../utils/functions';
 
-function CountryView({ run, country, range, once, session, dispatch }) {
+function CountryView({ run, country, range, session, dispatch }) {
   const history = useHistory();
   const factors = [
     'rank', 'score', 'economy', 'family', 'health',
@@ -21,7 +21,7 @@ function CountryView({ run, country, range, once, session, dispatch }) {
   ];
 
   const { xAxis, checked, dataset } = session;
-  const { setXAxis, setChecked, setDataset } = dispatch;
+  const { setXAxis, setChecked, setDataset, setLast } = dispatch;
   const [status, setStatus] = useState(undefined);
 
   const setAxis = (factor, val) => {
@@ -44,7 +44,10 @@ function CountryView({ run, country, range, once, session, dispatch }) {
   };
 
   const onLoad = async () => {
-    if (dataset !== undefined && once) {
+    const { last } = session;
+    let current = JSON.stringify({ country, range });
+
+    if (dataset && last === current) {
       console.log('using previous dataset for graph');
       setStatus('loaded');
       return;
@@ -86,6 +89,7 @@ function CountryView({ run, country, range, once, session, dispatch }) {
     }
 
     setDataset(data);
+    setLast(current);
     setStatus('loaded');
   };
 
@@ -195,15 +199,15 @@ const mapDispatchToProps = dispatch => {
     dispatch: {
       setXAxis: value => dispatch({ type: 'graph', sub: 'xAxis', payload: value }),
       setChecked: checked => dispatch({ type: 'graph', sub: 'checked', payload: checked }),
+      setLast: last => dispatch({ type: 'graph', sub: 'last', payload: last }),
       setDataset: data => dispatch({ type: 'graph', sub: 'dataset', payload: data })
     }
   }
 };
 
 const mapStateToProps = state => {
-  const { factors, graph } = state;
+  const { graph } = state;
   return {
-    once: factors.once,
     session: graph
   };
 };
