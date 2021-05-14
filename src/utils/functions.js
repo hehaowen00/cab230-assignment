@@ -56,7 +56,6 @@ export async function fetchCountries() {
 export async function fetchCountryRankings(country) {
   const encoded = replaceSpaces(country);
   const url = formatStr(RANKINGS_URL.country, encoded);
-
   const config = {
     method: 'get',
     url,
@@ -71,7 +70,6 @@ export async function fetchCountryRankings(country) {
 
 export async function fetchRankings(year) {
   const url = formatStr(RANKINGS_URL.year, year);
-
   const config = {
     method: 'get',
     url,
@@ -86,7 +84,6 @@ export async function fetchRankings(year) {
 
 export async function fetchFactorsLimit(token, year, limit) {
   const url = formatStr(FACTORS_URL.limited, year, limit);
-
   const config = {
     method: 'get',
     url,
@@ -100,8 +97,19 @@ export async function fetchFactorsLimit(token, year, limit) {
   return await fetchConfig(config, `could not retrieve factors for ${year} ${limit}`);
 }
 
-export function getFactorsCountry(country) {
+export async function fetchFactorsCountry(token, year, country) {
+  const url = formatStr(FACTORS_URL.country, year, country);
+  const config = {
+    method: 'get',
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    timeout: 5000
+  };
 
+  return await fetchConfig(config, `could not retrieve factors for ${country} ${year}`);
 }
 
 export function mapRankingsToMapData(data) {

@@ -131,10 +131,7 @@ const rankSeries = (data) => {
   let ranks = data.reduce((a, x) => [...a, x.rank], []);
 
   return [
-    {
-      name: 'rank',
-      data: ranks
-    }
+    { name: 'rank', data: ranks }
   ];
 };
 
@@ -142,10 +139,7 @@ const scoreSeries = (data) => {
   let ranks = data.reduce((a, x) => [...a, x.score], []);
 
   return [
-    {
-      name: 'rank',
-      data: ranks
-    }
+    { name: 'rank', data: ranks }
   ];
 };
 

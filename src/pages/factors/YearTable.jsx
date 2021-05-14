@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import { Col, Alert } from 'react-bootstrap-v5';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import ErrorAlert from '../../components/ErrorAlert';
+import LoadingAlert from '../../components/LoadingAlert';
 
 import { AddFactorsYear } from '../../redux/actions/Data';
 import { fetchFactorsLimit } from '../../utils/functions';
@@ -13,11 +15,12 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
   const history = useHistory();
   const [status, setStatus] = useState(undefined);
   const [factorsData, setFactorsData] = useState(undefined);
-
-  console.log('year table');
+  const factorsList = [
+    'rank', 'country', 'score', 'economy', 'family', 'health',
+    'freedom', 'generosity', 'trust'
+  ];
 
   const load = async () => {
-    console.log('load');
     setStatus('loading');
 
     let data = undefined;
@@ -62,37 +65,15 @@ function YearTable({ addFactorsYear, factors, run, year, limit }) {
   return (
     <Fragment>
       <Fragment>
-        {status === 'loading' &&
-          <Col style={styles.alert}>
-            <br />
-            <Alert variant={'info'}>
-              Loading data...
-            </Alert>
-          </Col>
-        }
-        {status === 'error' &&
-          <Col style={styles.alert}>
-            <br />
-            <Alert variant={'danger'}>
-              <Alert.Heading>Error</Alert.Heading>
-              <p>Unable to fetch data from server</p>
-            </Alert>
-          </Col>
-        }
+        {status === 'loading' && <LoadingAlert />}
+        {status === 'error' && <ErrorAlert />}
         {status === 'loaded' && factorsData &&
           <Col style={{ width: '100%' }}>
             <AgGridReact className='ag-theme-alpine' pagination={true}
               paginationPageSize={25} rowData={factorsData}
               containerStyle={{ height: '100%', width: '100%' }}>
-              <AgGridColumn field='rank' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='country' filter={true} sortable={true}></AgGridColumn>
-              <AgGridColumn field='score' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='economy' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='family' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='health' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='freedom' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='generosity' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
-              <AgGridColumn field='trust' filter='agNumberColumnFilter' sortable={true}></AgGridColumn>
+              {factorsList.map(f =>
+                <AgGridColumn field={f} filter='agNumberColumnFilter' sortable={true}></AgGridColumn>)}
             </AgGridReact>
           </Col>
         }
