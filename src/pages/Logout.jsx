@@ -21,7 +21,7 @@ function Logout({ authenticated, logout }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch({ type: 'userLogout' })
+    logout: () => dispatch({ type: 'user', sub: 'userLogout' })
   };
 };
 

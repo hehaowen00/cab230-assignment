@@ -14,14 +14,12 @@ const ALERTS = {
   401: { type: 'danger', msg: 'Error! Incorrect email or password' },
 };
 
-function Login({ authenticated, redirect, setAuth }) {
+function Login({ authenticated, redirect, setAuth, clearRedirect }) {
   const history = useHistory();
 
-  useEffect(() => {
-    if (authenticated) {
-      history.push('/home');
-    }
-  });
+  if (authenticated) {
+    history.push('/home');
+  }
 
   const [alert, setAlert] = useState(EMPTY);
   const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
@@ -59,15 +57,15 @@ function Login({ authenticated, redirect, setAuth }) {
     let json = await resp.json();
 
     if (resp.status === 200) {
-      // store token
       const { token, expires_in } = json;
       let expires_at = new Date();
       expires_at.setSeconds(expires_at.getSeconds() + expires_in);
-
       storeJWT(email, token, expires_at);
       setAuth(email);
 
-      history.push('/home');
+      let temp = redirect;
+      clearRedirect();
+      history.push(temp ? temp : '/home');
     } else {
       setAlert(ALERTS[resp.status]);
     }
@@ -105,7 +103,7 @@ function Login({ authenticated, redirect, setAuth }) {
 const mapDispatchToProps = dispatch => {
   return {
     setAuth: email => dispatch(UserLogin(email)),
-    clearRedirect: () => dispatch({ type: 'clearRedirect' })
+    clearRedirect: () => dispatch({ type: 'user', sub: 'clearRedirect' })
   };
 };
 

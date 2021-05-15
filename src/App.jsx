@@ -95,7 +95,7 @@ const styles = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: (email) => dispatch({ type: 'userLogin', payload: email }),
+    setAuth: (email) => dispatch({ type: 'user', sub: 'userLogin', payload: email }),
     setCountries: (data) => dispatch({ type: 'setCountries', payload: data })
   };
 };

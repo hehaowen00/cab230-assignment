@@ -5,20 +5,38 @@ const initialState = {
 };
 
 export default function UserReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const { type, sub, payload } = action;
 
-  switch (type) {
+  if (type !== 'user') {
+    return state;
+  }
+
+  switch (sub) {
     case 'userLogin': {
       return {
+        ...state,
         authenticated: true,
         email: payload
       };
     }
     case 'userLogout': {
       return {
+        ...state,
         authenticated: false,
-        email: state.email
+        email: ''
       };
+    }
+    case 'setRedirect': {
+      return {
+        ...state,
+        redirect: payload
+      }
+    }
+    case 'clearRedirect': {
+      return {
+        ...state,
+        redirect: undefined
+      }
     }
     default:
       return state

@@ -1,3 +1,4 @@
 export function UserLogin(email) {
-  return { type: 'userLogin', payload: email };
+  return { type: 'user', sub: 'userLogin', payload: email };
 }
+

@@ -3,8 +3,10 @@ const initialState = {
 };
 
 
-export default function HomeReducer(state = initialState, { type, sub, payload }) {
-  if (type !== 'home' && (!sub || !(sub in state))) {
+export default function HomeReducer(state = initialState, action) {
+  let { type, sub, payload } = action;
+
+  if (type !== 'home' || !sub || !(sub in state)) {
     return state;
   }
 

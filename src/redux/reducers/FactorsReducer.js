@@ -14,8 +14,10 @@ const allowed = [
   'once',
 ];
 
-export default function FactorsReducer(state = initialState, { type, sub, payload }) {
-  if (type !== 'factors' || !sub) {
+export default function FactorsReducer(state = initialState, action) {
+  let { type, sub, payload } = action;
+
+  if (type !== 'factors' || !(!sub || !(sub in state))) {
     return state;
   }
 

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { Button, Container, Form, Navbar, Row} from 'react-bootstrap-v5';
+import { Button, Container, Form, Navbar, Row } from 'react-bootstrap-v5';
 import CountrySelect from '../components/CountrySelect';
 import SelectElement from '../components/SelectElement';
 import YearTable from './factors/YearTable';
@@ -11,7 +11,7 @@ import CountryView from './factors/CountryView';
 function Factors({ authenticated, data, session, dispatch }) {
   const { countries, years } = data;
   const { view, year, limit, country, range, once } = session;
-  const { setView, setYear, setLimit, setCountry, setRange, setOnce } = dispatch;
+  const { setView, setYear, setLimit, setCountry, setRange, setOnce, setRedirect } = dispatch;
 
   const [run, setRun] = useState(false);
   const history = useHistory();
@@ -39,7 +39,6 @@ function Factors({ authenticated, data, session, dispatch }) {
     if (v === 'Country') {
       onClick();
     }
-    console.log(v);
     setView(v);
   }
 
@@ -57,6 +56,7 @@ function Factors({ authenticated, data, session, dispatch }) {
 
   useEffect(() => {
     if (!authenticated) {
+      setRedirect();
       history.push('/login');
     } else if (once) {
       onClick();
@@ -158,7 +158,8 @@ const mapDispatchToProps = dispatch => {
       setLimit: limit => dispatch({ type: 'factors', sub: 'limit', payload: limit }),
       setCountry: country => dispatch({ type: 'factors', sub: 'country', payload: country }),
       setRange: range => dispatch({ type: 'factors', sub: 'range', payload: range }),
-      setOnce: once => dispatch({ type: 'factors', sub: 'once', payload: once })
+      setOnce: once => dispatch({ type: 'factors', sub: 'once', payload: once }),
+      setRedirect: () => dispatch({ type: 'user', sub: 'setRedirect', payload: '/factors' })
     }
   };
 };
