@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
 import { deleteJWT } from '../utils/jwt';
+import { LogoutAction } from '../redux/actions/User';
 
-function Logout({ authenticated, logout }) {
-  const load = () => {
+function Logout({ logout }) {
+  useEffect(() => {
     deleteJWT()
     logout();
-  };
-
-  useEffect(() => {
-    load();
   });
 
   return (
@@ -21,15 +18,12 @@ function Logout({ authenticated, logout }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch({ type: 'user', sub: 'userLogout' })
+    logout: () => dispatch(LogoutAction())
   };
 };
 
-const mapStateToProps = state => {
-  let { user } = state;
-  return {
-    authenticated: user.authenticated,
-  };
+const mapStateToProps = () => {
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout);

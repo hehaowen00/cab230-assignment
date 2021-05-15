@@ -2,7 +2,6 @@ const initialState = {
   year: '2020'
 };
 
-
 export default function HomeReducer(state = initialState, action) {
   let { type, sub, payload } = action;
 
@@ -15,3 +14,4 @@ export default function HomeReducer(state = initialState, action) {
   return temp;
 }
 
+            

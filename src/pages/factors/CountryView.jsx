@@ -10,6 +10,14 @@ import ErrorAlert from '../../components/ErrorAlert';
 import LoadingAlert from '../../components/LoadingAlert';
 import SelectElement from '../../components/SelectElement';
 
+import {
+  XAxisAction,
+  CheckedAction,
+  LastAction,
+  DatasetAction,
+} from '../../redux/actions/Graph';
+import { OnceAction } from '../../redux/actions/Factors';
+
 import { fetchFactorsCountry } from '../../utils/functions';
 import { getJWT } from '../../utils/jwt';
 
@@ -153,7 +161,6 @@ function CountryView({ run, country, range, session, dispatch }) {
               {xAxis && <Chart
                 options={generateOptions(xAxis, dataset)}
                 series={generateSeries(checked, dataset, factors)}
-                type='line'
                 height='100%'
                 width='99%'
               />}
@@ -192,12 +199,18 @@ const generateOptions = (xAxis, data) => {
   let axis = getDataPoints(data, xAxis);
   return {
     chart: {
-      id: 'basic-bar',
+      type: 'scatter',
     },
     xaxis: {
       title: { text: xAxis },
       categories: axis
     },
+    markers: {
+      size: 4,
+      hover: {
+        size: 6
+      }
+    }
   }
 };
 
@@ -235,11 +248,11 @@ const toTitleCase = s => s.charAt(0).toUpperCase() + s.slice(1);
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: {
-      setXAxis: value => dispatch({ type: 'graph', sub: 'xAxis', payload: value }),
-      setChecked: checked => dispatch({ type: 'graph', sub: 'checked', payload: checked }),
-      setLast: last => dispatch({ type: 'graph', sub: 'last', payload: last }),
-      setDataset: data => dispatch({ type: 'graph', sub: 'dataset', payload: data }),
-      setOnce: () => dispatch({ type: 'factors', sub: 'once', payload: false }),
+      setXAxis: value => dispatch(XAxisAction(value)),
+      setChecked: checked => dispatch(CheckedAction(checked)),
+      setLast: last => dispatch(LastAction(last)),
+      setDataset: data => dispatch(DatasetAction(data)),
+      setOnce: () => dispatch(OnceAction(false)),
     }
   }
 };

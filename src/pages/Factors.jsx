@@ -8,6 +8,16 @@ import SelectElement from '../components/SelectElement';
 import YearTable from './factors/YearTable';
 import CountryView from './factors/CountryView';
 
+import {
+  ViewAction,
+  YearAction,
+  LimitAction,
+  CountryAction,
+  RangeAction,
+  OnceAction,
+} from '../redux/actions/Factors';
+import { RedirectAction } from '../redux/actions/User';
+
 function Factors({ authenticated, data, session, dispatch }) {
   const { countries, years } = data;
   const { view, year, limit, country, range, once } = session;
@@ -153,13 +163,13 @@ const styles = {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: {
-      setView: view => dispatch({ type: 'factors', sub: 'view', payload: view }),
-      setYear: year => dispatch({ type: 'factors', sub: 'year', payload: year }),
-      setLimit: limit => dispatch({ type: 'factors', sub: 'limit', payload: limit }),
-      setCountry: country => dispatch({ type: 'factors', sub: 'country', payload: country }),
-      setRange: range => dispatch({ type: 'factors', sub: 'range', payload: range }),
-      setOnce: once => dispatch({ type: 'factors', sub: 'once', payload: once }),
-      setRedirect: () => dispatch({ type: 'user', sub: 'setRedirect', payload: '/factors' })
+      setView: view => dispatch(ViewAction(view)),
+      setYear: year => dispatch(YearAction(year)),
+      setLimit: limit => dispatch(LimitAction(limit)),
+      setCountry: country => dispatch(CountryAction(country)),
+      setRange: range => dispatch(RangeAction(range)),
+      setOnce: once => dispatch(OnceAction(once)),
+      setRedirect: () => dispatch(RedirectAction('/factors'))
     }
   };
 };

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 import { Button, Container, Form, Row, Col } from 'react-bootstrap-v5';
 
-import { UserLogin } from '../redux/actions/User';
+import { ClearRedirectAction, LoginAction } from '../redux/actions/User';
 import { LOGIN_URL } from '../utils/definitions';
 import { storeJWT } from '../utils/jwt';
 
@@ -102,8 +102,8 @@ function Login({ authenticated, redirect, setAuth, clearRedirect }) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: email => dispatch(UserLogin(email)),
-    clearRedirect: () => dispatch({ type: 'user', sub: 'clearRedirect' })
+    setAuth: email => dispatch(LoginAction(email)),
+    clearRedirect: () => dispatch(ClearRedirectAction())
   };
 };
 

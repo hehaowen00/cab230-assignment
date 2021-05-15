@@ -8,6 +8,7 @@ import ErrorAlert from '../components/ErrorAlert';
 import LoadingAlert from '../components/LoadingAlert';
 
 import { AddRankings } from '../redux/actions/Data';
+import { SetYearAction } from '../redux/actions/Home';
 import { fetchRankings, mapRankingsToMapData } from '../utils/functions';
 
 function Home({ data, session, dispatch }) {
@@ -98,7 +99,7 @@ const mapDispatchToProps = dispatch => {
   return {
     dispatch: {
       addRankings: (year, rankings) => dispatch(AddRankings(year, rankings)),
-      setYear: (year) => dispatch({ type: 'home', sub: 'year', payload: year })
+      setYear: year => dispatch(SetYearAction(year))
     }
   };
 };

@@ -13,12 +13,13 @@ import Rankings from './pages/Rankings';
 import Factors from './pages/Factors';
 import Register from './pages/Register';
 
+import { LoginAction } from './redux/actions/User';
+import { fetchCountries } from './utils/functions';
+import { getJWT } from './utils/jwt';
+
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { fetchCountries } from './utils/functions';
-import { getJWT } from './utils/jwt';
 
 function App({ setAuth, setCountries }) {
   const [status, setStatus] = useState('loading');
@@ -46,10 +47,10 @@ function App({ setAuth, setCountries }) {
   });
 
   return (
-    <Container fluid className='min-vh-100 d-flex' style={styles.main}>
+    <Container fluid className='min-vh-100 d-flex app-main'>
       <Router>
         <Sidebar />
-        <div style={styles.content}>
+        <div className='app-content'>
           {status === 'loaded' &&
             <Switch>
               <Route exact path='/home' component={Home} />
@@ -78,31 +79,15 @@ function App({ setAuth, setCountries }) {
   );
 }
 
-const styles = {
-  main: {
-    padding: 0,
-    margin: 0
-  },
-  content: {
-    margin: 0,
-    width: 'calc(100% - 280px)',
-    overflowY: 'none',
-    height: '100vh',
-    maxHeight: '100%',
-    alignItems: 'center',
-  }
-}
-
 const mapDispatchToProps = dispatch => {
   return {
-    setAuth: (email) => dispatch({ type: 'user', sub: 'userLogin', payload: email }),
-    setCountries: (data) => dispatch({ type: 'setCountries', payload: data })
+    setAuth: email => dispatch(LoginAction(email)),
+    setCountries: data => dispatch({ type: 'setCountries', payload: data })
   };
 };
 
-const mapStateToProps = state => {
-  return {
-  }
+const mapStateToProps = () => {
+  return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
