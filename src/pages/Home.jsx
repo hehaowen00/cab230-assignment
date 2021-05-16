@@ -56,6 +56,10 @@ function Home({ data, session, dispatch }) {
 
   const onSubmit = e => e.preventDefault();
 
+  const onHover = (name, code, value, prefix, sufix) => {
+    return `${name}\n[Score: ${value}]`;
+  };
+
   return (
     <Container fluid className='content-1'>
       <main className='flex-shrink-0'>
@@ -70,14 +74,18 @@ function Home({ data, session, dispatch }) {
                 <div className='input-group sm-5'>
                   <span className='input-group-text'>Year</span>
                   <Form.Control as='select' onChange={e => updateYear(e)}>
-                    {years.map((year, idx) => <option key={idx} selected={year === Number(session.year)}>{year}</option>)}
+                    {years.map((year, idx) =>
+                      <option key={idx} selected={year === Number(session.year)}>
+                        {year}
+                      </option>)
+                    }
                   </Form.Control>
                 </div>
               </Form.Group>
             </Form>
             <Row>
               <Col style={styles.mapContainer}>
-                <WorldMap size='xxl' data={mapData} color='gold' />
+                <WorldMap size='xxl' data={mapData} color='gold' tooltipTextFunction={onHover} />
               </Col>
             </Row>
           </Fragment>}

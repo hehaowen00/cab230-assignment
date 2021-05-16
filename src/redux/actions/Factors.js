@@ -21,4 +21,3 @@ export function RangeAction(range) {
 export function OnceAction(once) {
   return { type: 'factors', sub: 'once', payload: once };
 }
-            
