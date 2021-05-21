@@ -19,9 +19,9 @@ function Sidebar({ authenticated }) {
   }, [authenticated]);
 
   return (
-    <div className='d-flex flex-column p-3 bg-light min-vh-100' style={styles.sidebar}>
-      <LinkContainer exact to='/home'>
-        <a href='/home' className='d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none'>
+    <div className='sidebar d-flex flex-column p-3 bg-light min-vh-100'>
+      <LinkContainer exact to='/'>
+        <a href='/' className='d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none'>
           <span className='fs-4'>World Happiness</span>
         </a>
       </LinkContainer>
@@ -38,7 +38,7 @@ function Sidebar({ authenticated }) {
       <ul className='nav nav-pills flex-row'>
         {footer}
       </ul>
-    </div >
+    </div>
   );
 }
 
@@ -52,14 +52,7 @@ function NavItem({ path, text }) {
   );
 }
 
-const styles = {
-  sidebar: {
-    width: '280px',
-    maxWidth: '280px',
-  }
-};
-
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { user } = state;
   return {
     authenticated: user.authenticated,

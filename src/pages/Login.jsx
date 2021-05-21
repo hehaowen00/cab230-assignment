@@ -2,17 +2,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import HiddenAlert, { EMPTY } from '../components/HiddenAlert'
 import { Button, Container, Form, Row, Col } from 'react-bootstrap-v5';
-
+import HiddenAlert from '../components/HiddenAlert'
 import { ClearRedirectAction, LoginAction } from '../redux/actions/User';
-import { LOGIN_URL } from '../utils/definitions';
-import { storeJWT } from '../utils/jwt';
 
-const ALERTS = {
-  400: { type: 'danger', msg: 'Error! Email and password are required' },
-  401: { type: 'danger', msg: 'Error! Incorrect email or password' },
-};
+import { storeJWT } from '../utils/jwt';
+import { loginUser } from '../utils/userFunctions';
 
 function Login({ authenticated, redirect, setAuth, clearRedirect }) {
   const history = useHistory();
@@ -21,77 +16,66 @@ function Login({ authenticated, redirect, setAuth, clearRedirect }) {
     history.push('/home');
   }
 
-  const [alert, setAlert] = useState(EMPTY);
-  const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState(undefined);
   const [isVisible, setVisible] = useState(false);
 
-  const updateEmail = (e) => {
-    let { value } = e.target;
-    setEmail(value);
-  };
-
-  const updatePassword = (e) => {
-    let { value } = e.target;
-    setPassword(value);
-  };
-
-  const updateVisibility = () => {
+  function updateVisibility() {
     setVisible(!isVisible);
   }
 
-  const submitForm = async (e) => {
+  async function submitForm(e) {
     e.preventDefault();
+    setAlert(undefined);
 
-    let resp = await fetch(LOGIN_URL, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    });
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
-    let json = await resp.json();
+    const data = {
+      email: email,
+      password: password,
+    };
 
-    if (resp.status === 200) {
-      const { token, expires_in } = json;
+    let res = await loginUser(data);
+    const { type } = res;
+
+    if (type === 'success') {
+      const { token, expires_in } = res.data;
+
       let expires_at = new Date();
       expires_at.setSeconds(expires_at.getSeconds() + expires_in);
-      storeJWT(email, token, expires_at);
+
+      let data = { email, token, expires_at };
+      storeJWT(data);
       setAuth(email);
 
       let temp = redirect;
       clearRedirect();
-      history.push(temp ? temp : '/home');
+      history.push(temp ? temp : '/');
     } else {
-      setAlert(ALERTS[resp.status]);
+      setAlert(ALERTS[res.status]);
     }
   };
 
   return (
-    <Container className='content'>
+    <Container className='form-view'>
       <Row className='d-flex justify-content-center'>
         <Col md='7' lg='7' xl='5' >
           <span className='text-center'><h4>Login</h4></span>
           <Form onSubmit={submitForm}>
             <Form.Group controlId='login'>
               <Form.Label>Email Address</Form.Label>
-              <Form.Control type='email' placeholder='Email Address'
-                required={true} value={email} onChange={updateEmail} />
+              <Form.Control name='email' type='email'
+                placeholder='Email Address' required={true} />
               <p></p>
               <Form.Label>Password</Form.Label>
-              <Form.Control type={isVisible ? 'text' : 'password'}
-                minLength='8' placeholder='Password'
-                required={true} value={password} onChange={updatePassword} />
+              <Form.Control name='password' type={isVisible ? 'text' : 'password'}
+                minLength='8' placeholder='Password' required={true} />
               <br />
               <Form.Check type='checkbox' label='Show Password'
                 value={isVisible} onChange={updateVisibility} />
             </Form.Group>
             <br />
-            <HiddenAlert alert={alert} set={setAlert} />
+            {alert !== undefined && <HiddenAlert alert={alert} set={setAlert} />}
             <Button className='col-12' variant='primary' type='submit'>Login</Button>
           </Form>
         </Col>
@@ -100,14 +84,19 @@ function Login({ authenticated, redirect, setAuth, clearRedirect }) {
   );
 }
 
-const mapDispatchToProps = dispatch => {
+const ALERTS = {
+  400: { type: 'danger', msg: 'Error: Email and password are required' },
+  401: { type: 'danger', msg: 'Error: Incorrect email or password' },
+};
+
+function mapDispatchToProps(dispatch) {
   return {
     setAuth: email => dispatch(LoginAction(email)),
     clearRedirect: () => dispatch(ClearRedirectAction())
   };
 };
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { user } = state;
   return {
     authenticated: user.authenticated,

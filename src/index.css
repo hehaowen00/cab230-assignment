@@ -1,3 +1,8 @@
+:root {
+  --sidebar-width: 17.5rem;
+  --menu-height: 54px;
+}
+
 html, body {
   height: 100%;
 }
@@ -15,33 +20,105 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.form-view {
+  padding-top: 4%;
+}
+
+.page-view {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.app-view {
+  padding: 0 !important;
+}
+
+.home-view {
+  padding-right: 20px;
+}
+
+.home-view > main {
+  width: 100%;
+  height: 100%;
+}
+
+.content-view {
+  margin: 0;
+  width: calc(100% - var(--sidebar-width));
+  height: 100vh;
+  max-height: 100%;
+}
+
+.padded {
+  padding-top: 1%;
+  padding-left: 1%;
+}
+
+/* UI components */
 * {
   outline: none !important;
   box-shadow: none !important;
 }
 
-.content {
-  padding-top: 4%;
+.alert {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-.content-1 {
-  padding-top: 1%;
+.menu-element {
+  min-width: 200px;
+  margin-right: 5px;
+}
+
+.row.content {
+  margin-left: 0;
+  height: calc(100% - var(--menu-height));
   width: 100%;
-  height: 100%;
-  max-height: 100%;
-  overflow: hidden;
+  max-width: 100%;
 }
 
-.app-content {
-  margin: 0;
-  width: calc(100% - 280px);
-  overflow-y: none;
-  height: 100vh;
-  max-height: 100%;
-  align-items: center;
+.sidebar {
+  width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
 }
 
-.app-main {
+/* Map View */
+.map-view {
+  max-width: 100%;
+  max-height: 84vh;
+  overflow-y: auto;
+}
+
+/* Comparison View */
+.col.left-view {
+  margin-right: 5px;
   padding: 0;
-  margin: 0;
+}
+
+.col.right-view {
+  margin-left: 5px;
+  padding: 0;
+}
+
+/* Factors Graph View */
+.row.table-view {
+  height: 41%;
+  overflow-y: auto;
+  margin-bottom: 0;
+}
+
+.row.graph-view {
+  height: 58%;
+  max-height: 58%;
+  margin-top: 0.1%;
+  padding: 10px;
+}
+
+.graph-options {
+  width: 20%;
+  max-width: 20%;
 }

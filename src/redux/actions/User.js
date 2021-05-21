@@ -1,9 +1,9 @@
 export function LoginAction(email) {
-  return { type: 'user', sub: 'userLogin', payload: email };
+  return { type: 'user', sub: 'login', payload: email };
 }
 
 export function LogoutAction() {
-  return { type: 'user', sub: 'userLogout' };
+  return { type: 'user', sub: 'logout' };
 }
 
 export function RedirectAction(path) {
@@ -11,6 +11,6 @@ export function RedirectAction(path) {
 }
 
 export function ClearRedirectAction() {
-  return { type: 'user', sub: 'clearRedirect' };
+  return { type: 'user', sub: 'setRedirect', payload: undefined };
 }
 

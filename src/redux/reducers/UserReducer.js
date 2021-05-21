@@ -12,14 +12,14 @@ export default function UserReducer(state = initialState, action) {
   }
 
   switch (sub) {
-    case 'userLogin': {
+    case 'login': {
       return {
         ...state,
         authenticated: true,
         email: payload
       };
     }
-    case 'userLogout': {
+    case 'logout': {
       return {
         ...state,
         authenticated: false,
@@ -30,12 +30,6 @@ export default function UserReducer(state = initialState, action) {
       return {
         ...state,
         redirect: payload
-      }
-    }
-    case 'clearRedirect': {
-      return {
-        ...state,
-        redirect: undefined
       }
     }
     default:

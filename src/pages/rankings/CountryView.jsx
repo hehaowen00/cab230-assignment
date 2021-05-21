@@ -2,18 +2,18 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import Chart from "react-apexcharts";
+import Chart from 'react-apexcharts';
 import ErrorAlert from '../../components/ErrorAlert';
 import LoadingAlert from '../../components/LoadingAlert';
 
-import { fetchCountryRankings } from '../../utils/functions';
+import { fetchRankings } from '../../utils/dataFunctions';
 
 function CountryView({ plot, country, rankings, years }) {
   const [status, setStatus] = useState('loading');
   const [countryData, setCountryData] = useState([]);
   const [range, setRange] = useState([undefined, undefined]);
 
-  const onLoad = async () => {
+  async function onLoad() {
     let data = undefined;
     let diff = [];
 
@@ -36,7 +36,7 @@ function CountryView({ plot, country, rankings, years }) {
     }
 
     if (diff.length < 5) {
-      let resp = await fetchCountryRankings(country);
+      let resp = await fetchRankings({country});
       const { type } = resp;
 
       if (type === 'error') {
@@ -105,21 +105,21 @@ function CountryView({ plot, country, rankings, years }) {
   );
 }
 
-const rankOptions = (country, range) => {
+function rankOptions(country, range) {
   const [start, end] = range;
   return {
     text: `${country} Happiness Rankings (${start} - ${end})`
   };
 };
 
-const scoreOptions = (country, range) => {
+function scoreOptions(country, range) {
   const [start, end] = range;
   return {
     text: `${country} Happiness Scores (${start} - ${end})`
   };
 };
 
-const rankSeries = (data) => {
+function rankSeries(data) {
   let ranks = data.reduce((a, x) => [...a, x.rank], []);
 
   return [
@@ -127,7 +127,7 @@ const rankSeries = (data) => {
   ];
 };
 
-const scoreSeries = (data) => {
+function scoreSeries(data) {
   let ranks = data.reduce((a, x) => [...a, x.score], []);
 
   return [
@@ -135,7 +135,7 @@ const scoreSeries = (data) => {
   ];
 };
 
-const options = ({ plot, years, country, range }) => {
+function options({ plot, years, country, range }) {
   return {
     chart: {
       id: 'basic-bar'
@@ -151,9 +151,11 @@ const options = ({ plot, years, country, range }) => {
   };
 };
 
-const series = (plot, data) => plot === 'Rank' ? rankSeries(data) : scoreSeries(data);
+function series(plot, data) {
+  return plot === 'Rank' ? rankSeries(data) : scoreSeries(data);
+}
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { data } = state;
   return {
     rankings: data.rankings,

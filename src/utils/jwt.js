@@ -27,8 +27,8 @@ export function getJWT() {
   };
 }
 
-export function storeJWT(email, token, expires) {
-  localStorage.setItem('jwt', JSON.stringify({ email, token, expires }));
+export function storeJWT(data) {
+  localStorage.setItem('jwt', JSON.stringify(data));
 }
 
 export function deleteJWT() {

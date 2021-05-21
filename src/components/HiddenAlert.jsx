@@ -1,13 +1,10 @@
 import React from 'react';
 import { Alert } from 'react-bootstrap-v5';
 
-export const EMPTY = { type: '', msg: '' };
-
-export default function AutoAlert({ alert, set }) {
+export default function HiddenAlert({ alert }) {
   return (
-    alert.type !== '' &&
-    <Alert variant={alert.type}
-      onClose={() => set(EMPTY)}>
+    alert !== undefined &&
+    <Alert variant={alert.type}>
       {alert.msg}
     </Alert>
   )

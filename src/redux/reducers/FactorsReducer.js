@@ -1,4 +1,15 @@
 const initialState = {
+  factors: [
+    'rank',
+    'country',
+    'score',
+    'economy',
+    'family',
+    'health',
+    'freedom',
+    'generosity',
+    'trust'
+  ],
   view: 'Country',
   year: undefined,
   limit: undefined,
@@ -30,3 +41,4 @@ export default function FactorsReducer(state = initialState, action) {
 
   return temp;
 }
+

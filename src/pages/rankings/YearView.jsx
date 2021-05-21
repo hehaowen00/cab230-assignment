@@ -6,30 +6,30 @@ import ErrorAlert from '../../components/ErrorAlert';
 import LoadingAlert from '../../components/LoadingAlert';
 
 import { AddRankings } from '../../redux/actions/Data';
-import { fetchRankings } from '../../utils/functions';
+import { fetchRankings } from '../../utils/dataFunctions';
 
 function YearView({ rankings, year, addRankings }) {
   const [status, setStatus] = useState('loading');
   const [yearData, setYearData] = useState([]);
 
-  const onLoad = async () => {
+  async function onLoad() {
     let data = undefined;
 
     if (year in rankings && rankings[year]) {
       console.log(`loaded rankings for ${year} from redux store`);
       data = rankings[year];
     } else {
-      let resp = await fetchRankings(year);
+      let resp = await fetchRankings({year});
       const { type } = resp;
-
-      if (type === 'error') {
-        setStatus('error');
-        return;
-      }
 
       if (type === 'success') {
         data = resp.data;
         addRankings(year, data);
+      }
+
+      if (type === 'error') {
+        setStatus('error');
+        return;
       }
     }
 
@@ -38,7 +38,7 @@ function YearView({ rankings, year, addRankings }) {
   };
 
   useEffect(() => {
-    if (year) {
+    if (Number(year) !== Number.NaN) {
       onLoad();
     }
   }, [year]);
@@ -64,13 +64,13 @@ function YearView({ rankings, year, addRankings }) {
   );
 }
 
-const mapDispatchToProps = dispatch => {
+function mapDispatchToProps(dispatch) {
   return {
     addRankings: (year, rankings) => dispatch(AddRankings(year, rankings))
   };
 };
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { data } = state;
   return {
     rankings: data.rankings
@@ -78,3 +78,4 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(YearView);
+

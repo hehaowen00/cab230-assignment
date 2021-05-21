@@ -4,107 +4,107 @@ import { Col, Container, Row, Form, Navbar } from 'react-bootstrap-v5';
 
 import CountrySelect from '../components/CountrySelect';
 import SelectElement from '../components/SelectElement';
+import YearSelect from '../components/YearSelect';
 import YearView from './rankings/YearView';
 import CountryView from './rankings/CountryView';
 
-function Rankings({ data, session, dispatch }) {
-  const { years } = data;
+function Rankings({ session, dispatch }) {
   const { view, plot } = session;
   const { setView, setPlotType, setCountries, setYears } = dispatch;
-
-  const setCountry = (idx) => {
-    return (value) => {
-      let countries = session.countries;
-      countries[idx] = value;
-      setCountries(countries);
-    }
-  };
-
-  const setYear = idx => value => {
-    let years = session.years;
-    years[idx] = value;
-    setYears(years);
-  };
 
   const inline = f => e => f(e.target.value);
   const onSubmit = e => e.preventDefault();
 
+  function setCountry(idx) {
+    return (value) => {
+      let countries = session.countries;
+      countries[idx] = value;
+      setCountries(countries);
+    };
+  };
+
+  function setYear(idx) {
+    return (value) => {
+      let years = session.years;
+      years[idx] = value;
+      setYears(years);
+    };
+  }
+
   return (
-    <Container fluid className='content-1' style={{ padding: 0, margin: 0 }}>
+    <Container fluid className='page-view'>
       <Navbar bg='light' variant='light' sticky='top'>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Form className='d-flex form-inline' onSubmit={onSubmit}>
-            <SelectElement text='Get' onChange={inline(setView)} style={styles.spaced} value={view}>
+            <SelectElement text='Get' onChange={inline(setView)} value={view}>
               <option key={0}>Country</option>
               <option key={1}>Year</option>
             </SelectElement>
             {view === 'Country' &&
-              <Fragment>
-                <SelectElement text='Plot' onChange={inline(setPlotType)} style={styles.spaced}>
-                  <option key={0}>Rank</option>
-                  <option key={1}>Score</option>
-                </SelectElement>
-                {session.countries.map((c, idx) =>
-                  <CountrySelect current={c} placeholder={'Country ' + (idx + 1)}
-                    onSelect={setCountry(idx)} />)
-                }
-              </Fragment>
+              <CountryMenu plot={plot} selection={session.countries} 
+                onChange={inline(setPlotType)} onSelect={setCountry} />
             }
             {view === 'Year' &&
               <Fragment>
                 {session.years.map((y, idx) =>
-                  <SelectElement
-                    text={'Year ' + (idx + 1)} onChange={inline(setYear(idx))}
-                    style={styles.spaced} value={y}>
-                    <option key={0}>Select</option>
-                    {years.map((year, idx) =>
-                      <option key={idx + 1} value={year}>{year}</option>)
-                    }
-                  </SelectElement>
+                  <YearSelect text={'Year ' + (idx + 1)} value={y}
+                    onChange={setYear(idx)} />
                 )}
               </Fragment>
             }
           </Form>
         </Navbar.Collapse>
       </Navbar>
-      <Row style={{ height: 'calc(100% - 54px)', maxWidth: '100%' }}>
-        {view === 'Year' &&
-          <ContentView>
-            {session.years.map(year => <YearView year={year} />)}
-          </ContentView>
-        }
+      <Row className='content'>
         {view === 'Country' &&
           <ContentView>
-            {session.countries.map(country => <CountryView plot={plot} country={country} />)}
+            {session.countries.map((country, idx) =>
+              <CountryView key={idx} plot={plot} country={country} />)
+            }
+          </ContentView>
+        }
+        {view === 'Year' &&
+          <ContentView>
+            {session.years.map(year =>
+              <YearView year={year} />)
+            }
           </ContentView>
         }
       </Row>
-    </Container >
+    </Container>
   );
 }
 
-const ContentView = ({ children }) => {
+function CountryMenu({plot, selection, onChange, onSelect}) {
   return (
     <Fragment>
-      <Col style={{ height: '100%' }} >
+      <SelectElement text='Plot' onChange={onChange} value={plot}>
+        <option key={0}>Rank</option>
+        <option key={1}>Score</option>
+      </SelectElement>
+      {selection.map((selected, idx) =>
+        <CountrySelect key={idx} current={selected} placeholder={'Country ' + (idx + 1)}
+          onSelect={onSelect(idx)} />)
+      }
+    </Fragment>
+  );
+}
+
+function ContentView({ children }) {
+  return (
+    <Fragment>
+      <Col className='left-view'>
         {children[0]}
       </Col>
-      <Col className='float-right' style={{ height: '100%', padding: 0 }} >
+      <Col className='right-view'>
         {children[1]}
       </Col>
     </Fragment>
   );
 };
 
-const styles = {
-  spaced: {
-    minWidth: '200px',
-    marginRight: '5px'
-  }
-};
-
-const mapDispatchToProps = dispatch => {
+function mapDispatchToProps(dispatch) {
   return {
     dispatch: {
       setView: view => dispatch(
@@ -119,13 +119,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const mapStateToProps = state => {
-  let { data, rankings } = state;
+function mapStateToProps(state) {
+  let { rankings } = state;
 
   return {
-    data: {
-      years: data.years,
-    },
     session: rankings
   };
 };

@@ -1,4 +1,4 @@
-const generateArr = () => {
+function generateArr() {
   let arr = new Array(8).fill(false);
   arr[0] = true;
   return arr;
