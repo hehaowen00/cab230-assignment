@@ -1,0 +1,126 @@
+
+> backend@0.0.0 start
+> node ./bin/www
+
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /countries HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?country=Australia&year=2020&name=a HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?country=Austral1a HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?year=twentytwenty HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+rem [] -1
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'country' ] 0
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?country=Australia HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'country' ] 0
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?country=NotARealCountry HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'year' ] -1
+rem [ 'year' ] 0
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?year=2015 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'year' ] -1
+rem [ 'year' ] 0
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?year=2000 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'year', 'country' ] 1
+rem [ 'year' ] 0
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /rankings?&year=2019&country=Australia HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+ALERT /user/register
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/register HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/register
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/register HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/register
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/register HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/register
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/register HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020 HTTP/1.1" 401 {"statusCode":401,"statusMessage":"Unauthorized"}
+rem [] -1
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [] -1
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [] -1
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2000 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'country' ] 0
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?country=notARealCountry HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [] -1
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2018 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+rem [ 'country' ] 0
+rem [] -1
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?country=Australia HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020a HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?country=Austral1a HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+rem [ 'limit' ] -1
+rem [ 'limit' ] 0
+A valid integer must be provided to limit
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?limit=10 HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?limit=-10 HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?limit=3.14 HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?limit=abc HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /factors/2020?region=Australia&limit=10 HTTP/1.1" 400 {"statusCode":400,"statusMessage":"Bad Request"}
+ALERT /user/register
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/register HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/df2fb166-b9ce-446f-87a0-b6cd72c5d165@email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/df2fb166-b9ce-446f-87a0-b6cd72c5d165@email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/6301198a-d75b-4a09-8101-c92196d33e88@email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/6301198a-d75b-4a09-8101-c92196d33e88@email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/login
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "POST /user/login HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "PUT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /user/ed330e8f-d930-4103-a2da-a4e0ab83c21e@fake-email.com/profile HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+ALERT /980fdb0e-8438-4efe-9fdc-9b5ea517a2f3
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET /980fdb0e-8438-4efe-9fdc-9b5ea517a2f3 HTTP/1.1" 404 {"statusCode":404,"statusMessage":"Not Found"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET / HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET / HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
+::ffff:127.0.0.1 - - [08/Jun/2021:12:08:28 +0000] "GET / HTTP/1.1" 200 {"statusCode":200,"statusMessage":"OK"}
