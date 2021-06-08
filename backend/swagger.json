@@ -683,11 +683,41 @@
               "type": "string"
             }
           }
-        ]
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An object containing email, firstName, lastName, address (authenticated only) and dob (authenticated only) properties. An example object for an authenticated request is shown below. If no profile information has been entered for the user via the profile PUT request route, all returned values except email are expected to be null. Click on 'Schema' below to see a response example for an unauthenticated request.",
+            "content": {
+            }
+          }
+        }
       },
       "put": {
         "tags": ["Profile"],
         "description": "Updates a user's profile information. The path parameter (email) is required and must be an email that has been registered. A request body containing the user's profile information must be sent. This route returns an object containing the user's updated profile information. This route also requires the user to be authenticated - a valid JWT token must be sent in the header of the request. To test this route using Swagger, click the green 'Authorize' button at the top of this page to enter your JWT token. A JWT token can be obtained by logging in.",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "Email address of a registered user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+        }
       }
     }
   }

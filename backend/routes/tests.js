@@ -41,7 +41,6 @@ const factorsTests = [
     }
 ];
 
-
 module.exports = {
     factorsTests,
     rankingsTests

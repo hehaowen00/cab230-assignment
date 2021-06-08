@@ -1,4 +1,4 @@
-/* Combinators */
+// Base Combinator Class
 class P {
     constructor(s) {
         this.s = { result: [], remainder: [], state: s };
@@ -56,24 +56,6 @@ class And extends P {
 
     run(s) {
         return this.b.run(this.a.run(s));
-    }
-}
-
-class Or extends P {
-    constructor(a, b) {
-        super();
-        this.a = a;
-        this.b = b;
-    }
-
-    run(s) {
-        let r1 = a.run(s);
-
-        if (r1.result[-1]) {
-            return r1;
-        }
-
-        return b.run(s);
     }
 }
 

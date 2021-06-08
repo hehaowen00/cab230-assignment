@@ -2,14 +2,12 @@ const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const knex = require('./db/knex');
-
-const helmet = require('helmet');
 const logger = require('./logger');
 
 const indexRouter = require('./routes/index');
-const profileRouter = require('./routes/profile');
 const usersRouter = require('./routes/users');
 
 var app = express({ strict: true });
@@ -29,10 +27,9 @@ app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
-app.use('/profile', profileRouter);
 
+// handle all routes not matched
 app.use('*', (req, res) => {
-    console.log('ALERT', req.originalUrl);
     res.status(404).send('Not Found');
 });
 
