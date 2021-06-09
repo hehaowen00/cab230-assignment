@@ -6,20 +6,30 @@
 
 var app = require('../app');
 var debug = require('debug')('backend:server');
-var http = require('http');
+var http = require('https');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort('443');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/cab230.key -out /etc/ssl/certs/cab230.crt
+
+/* SSL */
+const fs = require('fs');
+const https = require('https');
+ 
+const key = fs.readFileSync('/etc/ssl/private/cab230.key','utf8');
+const cert = fs.readFileSync('/etc/ssl/certs/cab230.crt','utf8');
+const credentials = { key, cert };
+
+var server = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.
