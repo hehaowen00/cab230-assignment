@@ -173,6 +173,7 @@ router.put('/:email/profile', isAuthorized, async (req, res, next) => {
         }
     }
 
+    // validate date format
     if (!moment(dob, 'YYYY-MM-DD').isValid() || dob.length !== 10) {
         res.status(400).json({
             error: true,
@@ -181,6 +182,7 @@ router.put('/:email/profile', isAuthorized, async (req, res, next) => {
         return;
     }
 
+    // check if date is before now
     if (moment(dob).isAfter(moment())) {
         res.status(400).json({
             error: true,
@@ -189,6 +191,7 @@ router.put('/:email/profile', isAuthorized, async (req, res, next) => {
         return;
     }
 
+    // re-export date format
     const dateString = moment(dob).format('YYYY-MM-DD');
 
     await db('users').update({ firstName, lastName, dob: dateString, address })
@@ -197,6 +200,7 @@ router.put('/:email/profile', isAuthorized, async (req, res, next) => {
     let rows = await db.select('email', 'firstName', 'lastName', 'dob', 'address')
         .from('users').where('email', email);
 
+    // check if user exists
     if (rows.length === 0) {
         res.status().json({
             error: true,
