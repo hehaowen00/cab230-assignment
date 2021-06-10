@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
-const secret_key = 'secret key';
+const SECRET_KEY = 'secret key';
 
-const isAuthorized = (req, res, next) => {
+// Checks if the request is using a valid JWT token
+const AuthRequired = (req, res, next) => {
     const { authorization } = req.headers;
 
     let token = undefined;
@@ -25,7 +26,7 @@ const isAuthorized = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, secret_key);
+        const decoded = jwt.verify(token, SECRET_KEY);
         if (decoded.exp < Date.now()) {
             res.status(401).json({
                 error: true,
@@ -44,32 +45,23 @@ const isAuthorized = (req, res, next) => {
     }
 };
 
-const checkJWT = (req) => {
-    const { authorization } = req.headers;
-    let token = undefined;
-
-    if (authorization) {
-        let split = authorization.split(" ");
-        if (split.length !== 2 || split[0] !== 'Bearer') {
-            return false;
-        }
-        token = split[1];
+// If a JWT token is invalid, access is denied
+// If a JWT token is not provided, access is allowed
+const AuthOptional = (req, res, next) => {
+    req.authorized = req.headers.authorization ? true : false;
+    if (req.authorized) {
+        AuthRequired(req, res, next);
     } else {
-        return false;
+        next();
     }
+}
 
-    try {
-        const decoded = jwt.verify(token, secret_key);
-        if (decoded.exp < Date.now()) {
-            return false;
-        }
-        return true;
-    } catch (err) {
-        return false;
-    }
+const generateJWT = (data) => {
+    return jwt.sign(data, SECRET_KEY);
 };
 
 module.exports = {
-    secret_key,
-    isAuthorized,
+    AuthRequired,
+    AuthOptional,
+    generateJWT
 };

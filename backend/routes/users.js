@@ -1,11 +1,10 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const moment = require('moment');
 
 const express = require('express');
 var router = express.Router();
 
-const { secret_key, isAuthorized } = require('./util/auth');
+const { AuthRequired, AuthOptional, generateJWT } = require('../middleware/auth');
 
 /* POST login */
 router.post('/login', async function(req, res, next) {
@@ -36,7 +35,7 @@ router.post('/login', async function(req, res, next) {
     if (await bcrypt.compare(body.password, password)) {
         const expires_in = 60 * 60 * 24;
         const exp = Date.now() + expires_in * 1000;
-        const token = jwt.sign({ email: req.body.email, exp }, secret_key);
+        const token = generateJWT({ email: req.body.email, exp });
 
         res.json({
             token,
@@ -92,17 +91,9 @@ router.post('/register', async (req, res, next) => {
     }
 });
 
-const optionalAuth = (req, res, next) => {
-    req.authorized = req.headers.authorization ? true : false;
-    if (req.authorized) {
-        isAuthorized(req, res, next);
-    } else {
-        next();
-    }
-}
 
 /* GET profile */
-router.get('/:email/profile', optionalAuth, async (req, res, next) => {
+router.get('/:email/profile', AuthOptional, async (req, res, next) => {
     const { email } = req.params;
     const { db, authorized } = req;
 
@@ -133,7 +124,7 @@ router.get('/:email/profile', optionalAuth, async (req, res, next) => {
 
 });
 
-router.put('/:email/profile', isAuthorized, async (req, res, next) => {
+router.put('/:email/profile', AuthRequired, async (req, res, next) => {
     const { email } = req.params;
     const { db, body } = req;
     const { firstName, lastName, dob, address } = body;

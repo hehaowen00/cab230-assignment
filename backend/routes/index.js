@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router({ strict: true });
 
-const { state, contains, success, func, ident } = require('./util/combinators');
-const { factorsTests, rankingsTests } = require('./tests');
-const { isAuthorized } = require('./util/auth');
-
 /* Swagger */
 const swaggerUI = require('swagger-ui-express');
 const specification = require('../swagger.json');
+
+const { AuthRequired } = require('../middleware/auth');
+const { factorsTests, rankingsTests } = require('./tests');
+const { state, contains, success, func, ident } = require('../util/combinators');
 
 /* GET countries */
 router.get('/countries', async (req, res, _next) => {
@@ -41,7 +41,7 @@ router.get('/countries', async (req, res, _next) => {
 });
 
 /* GET factors */
-router.get('/factors/:year', isAuthorized, async (req, res, next) => {
+router.get('/factors/:year', AuthRequired, async (req, res, next) => {
     let { db, query } = req;
 
     // validate request parameters and query parameters
