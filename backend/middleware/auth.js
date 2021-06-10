@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'secret key';
 
 // Checks if the request is using a valid JWT token
-const AuthRequired = (req, res, next) => {
+const AuthRequired = async (req, res, next) => {
     const { authorization } = req.headers;
 
     let token = undefined;
@@ -27,6 +27,12 @@ const AuthRequired = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
+
+        let result = await req.db.select('email').from('users').where('email', decoded.email);
+        if (result.length !== 1 || result[0].email !== decoded.email) {
+            throw 'invalid JWT';
+        }
+
         if (decoded.exp < Date.now()) {
             res.status(401).json({
                 error: true,
